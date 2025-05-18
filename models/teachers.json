@@ -1,0 +1,12 @@
+[
+    {
+    "_id": 1,
+    "name": "Julia Sánchez",
+    "speciality": "Informática"
+    },
+    {
+    "_id": 2,
+    "name": "Mario López",
+    "speciality": "Producción Audiovisual"
+    }
+]

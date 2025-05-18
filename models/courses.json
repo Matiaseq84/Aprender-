@@ -1,0 +1,13 @@
+[
+    {
+        "_id": 1,
+        "name": "Informática",
+        "price": 1000,
+        "capacity": 25,
+        "schedule": [
+            {"day": "Lunes", "time": "18:00"},
+            {"day": "Miércoles", "time": "19:00"}
+        ],
+        "teacherId": 1
+    }
+]
