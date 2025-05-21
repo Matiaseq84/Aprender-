@@ -3,11 +3,11 @@ const DB_FILE = './models/users.json'
 
 export async function validateLogin(req, res) {
     const {username, password} = req.body
-    console.log("Body received:", req.body);
+    
     try {
         const users = await readData(DB_FILE)
         console.log(users)
-        const user = users.find(user => username)
+        const user = users.find(user => user.username === username)
 
         //if(!user) res.status(401).render('login', {error: 'Usuario o contraseña incorrecta'})
         
