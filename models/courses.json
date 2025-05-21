@@ -8,6 +8,7 @@
             {"day": "Lunes", "time": "18:00"},
             {"day": "Miércoles", "time": "19:00"}
         ],
-        "teacherId": 1
+        "teacherId": 1,
+        "status": 1
     }
 ]

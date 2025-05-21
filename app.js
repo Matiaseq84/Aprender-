@@ -1,5 +1,6 @@
 import express from 'express';
 import loginRouter from './routes/loginRoutes.js'
+import adminRouter from './routes/adminRoutes.js'
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -14,6 +15,7 @@ app.get('/', (req,res) => {
 })
 
 app.use('/login', loginRouter)
+app.use('/admin', adminRouter)
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo  en http://localhost:${PORT}`)

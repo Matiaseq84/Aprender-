@@ -2,7 +2,7 @@
     {
         "_id": 1,
         "studentName": "Pablo",
-        "studentSurname": "Cano",
+        "studentLastname": "Cano",
         "dni": 30464646,
         "email": "pablo@mail.com",
         "tel": 123456
