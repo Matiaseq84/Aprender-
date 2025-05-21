@@ -1,14 +1,28 @@
 [
-    {
-        "_id": 1,
-        "name": "Informática",
-        "price": 1000,
-        "capacity": 25,
-        "schedule": [
-            {"day": "Lunes", "time": "18:00"},
-            {"day": "Miércoles", "time": "19:00"}
-        ],
-        "teacherId": 1,
-        "status": 1
-    }
+  {
+    "id": 1,
+    "name": "Informatica",
+    "price": "500",
+    "schedule": [
+      {
+        "day": "Lunes",
+        "hour": "11:00"
+      }
+    ],
+    "teacher": "2",
+    "status": "on"
+  },
+  {
+    "id": 2,
+    "name": "Administracion",
+    "price": "500",
+    "schedule": [
+      {
+        "day": "Miercoles",
+        "hour": "11:00"
+      }
+    ],
+    "teacher": "1",
+    "status": "on"
+  }
 ]
