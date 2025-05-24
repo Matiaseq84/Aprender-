@@ -1,10 +1,42 @@
 [
-    {
-        "_id": 1,
-        "studentName": "Pablo",
-        "studentLastname": "Cano",
-        "dni": 30464646,
-        "email": "pablo@mail.com",
-        "tel": 123456
-    }
+  {
+    "_id": 1,
+    "studentName": "Pablo",
+    "studentLastname": "Cano",
+    "dni": "30464646",
+    "email": "pablo@mail.com",
+    "tel": "123456"
+  },
+  {
+    "_id": 2,
+    "studentName": "Lucía",
+    "studentLastname": "Ríos",
+    "dni": 30888999,
+    "email": "lucia@mail.com",
+    "tel": 123457
+  },
+  {
+    "_id": 3,
+    "studentName": "Sofía",
+    "studentLastname": "Fernández",
+    "dni": 30999111,
+    "email": "sofia@aprender.com",
+    "tel": 123458
+  },
+  {
+    "_id": 4,
+    "studentName": "Martín",
+    "studentLastname": "Pérez",
+    "dni": 31222333,
+    "email": "martinperez@gmail.com",
+    "tel": 123459
+  },
+  {
+    "_id": 5,
+    "studentName": "Carla",
+    "studentLastname": "Gómez",
+    "dni": 30111222,
+    "email": "carlagomez@hotmail.com",
+    "tel": 123460
+  }
 ]

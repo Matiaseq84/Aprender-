@@ -1,0 +1,17 @@
+extends admin-panel-layout
+
+block content
+  h2 Buscar alumnos
+
+  form(action="/students" method="GET")
+    input(type="text" name="name" placeholder="Buscar por nombre y apellido")
+    input(type="text" name="dni" placeholder="Buscar por DNI")
+    button(type="submit") Buscar
+
+  if students.length
+    h3 Resultados
+    ul
+      each student in students
+        li #{student.name} | #{student.email}
+  else
+    p No se encontraron alumnos.

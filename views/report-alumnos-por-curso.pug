@@ -1,0 +1,16 @@
+extends admin-panel-layout
+
+block content
+  h2 Alumnos por curso
+
+  if cursosConAlumnos.length
+    each curso in cursosConAlumnos
+      h3= curso.name
+      if curso.alumnos.length
+        ul
+          each alumno in curso.alumnos
+            li #{alumno.studentName} #{alumno.studentLastname} - #{alumno.email}
+      else
+        p No hay alumnos inscriptos en este curso.
+  else
+    p No hay cursos disponibles.

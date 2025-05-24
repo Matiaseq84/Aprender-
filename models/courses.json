@@ -1,28 +1,30 @@
 [
   {
     "id": 1,
-    "name": "Informatica",
+    "name": "Informática",
     "price": "500",
+    "capacity": 25,
     "schedule": [
       {
         "day": "Lunes",
         "hour": "11:00"
       }
     ],
-    "teacher": "2",
-    "status": "on"
+    "teacher": "Pablo Cano",
+    "status": "Activo"
   },
   {
     "id": 2,
-    "name": "Administracion",
+    "name": "Administración",
     "price": "500",
+    "capacity": 30,
     "schedule": [
       {
-        "day": "Miercoles",
+        "day": "Miércoles",
         "hour": "11:00"
       }
     ],
-    "teacher": "1",
-    "status": "on"
+    "teacher": "Ana Gómez",
+    "status": "Inactivo"
   }
 ]

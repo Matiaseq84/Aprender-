@@ -1,0 +1,22 @@
+extends admin-panel-layout
+
+block content
+  h2 Cupos disponibles por curso
+
+  if cursosConCupos.length
+    table
+      thead
+        tr
+          th Curso
+          th Cupo total
+          th Inscriptos
+          th Disponibles
+      tbody
+        each curso in cursosConCupos
+          tr
+            td= curso.name
+            td= curso.capacity
+            td= curso.usados
+            td= curso.disponibles
+  else
+    p No hay cursos activos registrados.
