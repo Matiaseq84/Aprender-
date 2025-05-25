@@ -36,7 +36,7 @@ export async function getCuposDisponibles(req, res) {
   const enrollments = await readData(ENROLLMENTS_DB);
 
   const cursosConCupos = courses
-    .filter(course => course.status === 'Activo')
+    .filter(course => course.status === 'Activo' || 'on')//OJO QUE AHORA ES ON
     .map(course => {
       const inscriptos = enrollments.filter(e => e.courseId === course.id);
       const usados = inscriptos.length;

@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Informática",
     "price": "500",
-    "capacity": 25,
+    "capacity": "25",
     "schedule": [
       {
         "day": "Lunes",
@@ -26,5 +26,48 @@
     ],
     "teacher": "Ana Gómez",
     "status": "Inactivo"
+  },
+  {
+    "id": 3,
+    "name": "Informatica",
+    "price": "100",
+    "schedule": [
+      {
+        "day": "Lunes",
+        "hour": "10:00"
+      },
+      {
+        "day": "Martes",
+        "hour": "12:00"
+      }
+    ],
+    "teacher": "1",
+    "status": "on"
+  },
+  {
+    "id": 4,
+    "name": "Produccion",
+    "price": "100",
+    "schedule": [
+      {
+        "day": "Miercoles",
+        "hour": "11:00"
+      }
+    ],
+    "teacher": "2",
+    "status": "on"
+  },
+  {
+    "id": 5,
+    "name": "Gestion",
+    "price": "100",
+    "schedule": [
+      {
+        "day": "Miercoles",
+        "hour": "11:00"
+      }
+    ],
+    "teacher": "2",
+    "status": "on"
   }
 ]

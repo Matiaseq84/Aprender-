@@ -5,6 +5,7 @@ import courseRoutes from './routes/coursesRoutes.js';
 import studentRoutes from './routes/studentsRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
 
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 

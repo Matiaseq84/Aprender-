@@ -38,5 +38,13 @@
     "dni": 30111222,
     "email": "carlagomez@hotmail.com",
     "tel": 123460
+  },
+  {
+    "_id": 6,
+    "studentName": "pepe",
+    "studentLastname": "mujica",
+    "dni": "22222222",
+    "email": "pepe@gmail.com",
+    "tel": "4443068"
   }
 ]
