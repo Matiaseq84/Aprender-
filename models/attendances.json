@@ -5,5 +5,12 @@
         "courseId": 1,
         "date": "2025-05-21",
         "present": true
+    },
+     {
+        "_id": 2,
+        "studentId": 6,
+        "courseId": 3,
+        "date": "2025-05-21",
+        "present": true
     }
 ]

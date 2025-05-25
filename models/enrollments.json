@@ -4,6 +4,21 @@
         "studentId": 1,
         "courseId": 1,
         "enrollmentDate": "2025-05-18" 
+    },
+    {
+        "_id": 2,
+        "studentId":2,
+        "courseId": 2,
+        "enrollmentDate": "2025-05-18" 
+    },
+     {
+        "_id": 3,
+        "studentId":6,
+        "courseId": 3,
+        "enrollmentDate": "2025-05-18" 
     }
     
+    
+    
 ]
+

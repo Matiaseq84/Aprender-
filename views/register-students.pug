@@ -1,0 +1,42 @@
+
+extends admin-panel-layout 
+
+
+block content
+  .form-container 
+    h2 Registrar Estudiante 
+    
+    //- Sección para mostrar mensajes de error o éxito desde el controlador
+    
+    if error
+      .alert.alert-danger #{error}
+    if success
+      .alert.alert-success #{success}
+
+  
+    form(action="/admin/register-students" method="POST")
+      .form-group 
+        label(for="studentName") Nombre:
+        input(type="text" id="studentName" name="studentName" value=formData && formData.studentName ? formData.studentName : '' required)
+
+      .form-group
+        label(for="studentLastname") Apellido: 
+        //- El 'for' del label y el 'id' del input deben coincidir con el 'name'
+        input(type="text" id="studentLastname" name="studentLastname" value=formData && formData.studentLastname ? formData.studentLastname : '' required)
+
+      .form-group
+        label(for="dni") DNI:
+        input(type="text" id="dni" name="dni" value=formData && formData.dni ? formData.dni : '' required)
+
+      .form-group
+        label(for="email") Correo electrónico:
+        //- El 'for' del label y el 'id' del input deben coincidir con el 'name'
+        input(type="email" id="email" name="email" value=formData && formData.email ? formData.email : '' required)
+      
+      .form-group
+        label(for="tel") Teléfono:
+        //- El 'for' del label y el 'id' del input deben coincidir con el 'name'
+        input(type="tel" id="tel" name="tel" value=formData && formData.tel ? formData.tel : '' required)
+      
+      .form-group
+        button(type="submit") Registrar Estudiante
