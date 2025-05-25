@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Informática",
+    "name": "Informática 1",
     "price": "500",
     "capacity": "25",
     "schedule": [
@@ -17,7 +17,7 @@
     "id": 2,
     "name": "Administración",
     "price": "500",
-    "capacity": 30,
+    "capacity": "1",
     "schedule": [
       {
         "day": "Miércoles",
@@ -25,7 +25,7 @@
       }
     ],
     "teacher": "Ana Gómez",
-    "status": "Inactivo"
+    "status": "Activo"
   },
   {
     "id": 3,
@@ -55,7 +55,8 @@
       }
     ],
     "teacher": "2",
-    "status": "on"
+    "status": "Activo",
+    "capacity": "1"
   },
   {
     "id": 5,
