@@ -23,7 +23,7 @@ export async function createAttendance(attendanceData) {
 
 export async function showAttendanceForm(req, res) {
   const courses = await getAllCourses();
-  const { courseId } = req.query;
+  const { courseId, success, error } = req.query;
 
   console.log(courseId)
 
@@ -32,8 +32,8 @@ export async function showAttendanceForm(req, res) {
       courses,
       selectedCourse: null,
       students: null,
-      success: null,
-      error: null
+      success,
+      error
     });
   }
 
@@ -50,13 +50,12 @@ export async function showAttendanceForm(req, res) {
   }
 }
 
-
   res.render('take-attendance', {
     courses,
     selectedCourse,
     students,
-    success: null,
-    error: null
+    success,
+    error
   });
 }
 

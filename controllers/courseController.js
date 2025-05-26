@@ -7,16 +7,29 @@ const normalize = str =>
   str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 export async function getAllCourses() {
+  try {
     const data = await readData(DB_FILE)
     return data
+  } catch(error) {
+    console.error('Error al leer el archivo')
+    throw error
+  }
+    
+    
 }
 
 export async function addCourse(data) {
+  try {
     const courses = await getAllCourses()
 
     courses.push(data)
 
-    writeData(DB_FILE, courses)
+    await writeData(DB_FILE, courses)
+  } catch(error) {
+    console.error('Error al guardar el curso:', error);
+    throw error;
+  }
+    
 }
 
 export async function getCourseById(id) {

@@ -1,6 +1,8 @@
 
 import { getAllCourses, addCourse } from "../controllers/courseController.js";
 import { Course } from "../classes/Course.js"
+import { readData } from "../utils/functions.js";
+import { getAllTeachers } from "./teacherController.js";
 
 const DB_FILE = './models/courses.json'
 
@@ -8,9 +10,18 @@ const DB_FILE = './models/courses.json'
 export async function registerCourse(req, res) {
     try {
         const { courseName, coursePrice, courseCapacity, hours, days, teacher, status }  = req.body
-    
+
     let schedule = []
     let enrolledStudents = []
+
+    if (!courseName || !coursePrice || !courseCapacity || !teacher || !status || !days?.length || !hours?.length) {
+        const teachers = await getAllTeachers();
+        return res.render('register-course', {
+            teachers,
+            error: 'Todos los campos son obligatorios.'
+    });
+}
+
     
     for (let i = 0 ; i < days.length; i++) {
         schedule.push({
@@ -32,14 +43,26 @@ export async function registerCourse(req, res) {
         status,
         enrolledStudents
     )
-        
-    addCourse(newCourse)
 
-    res.status(201).send('Curso creado')
+    console.log(newCourse)
+        
+    await addCourse(newCourse)
+
+    const teachers = await getAllTeachers()
+
+    res.render('register-course', {
+            teachers,
+            success: 'Curso registrado exitosamente.',
+            
+        });
     
     } catch(error) {
         console.error('Error', error)
-        res.status(500).send('Error en el servidor')
+        const teachers = await getAllTeachers()
+        res.status(500).render('register-course', {
+            teachers,
+            error: 'Error en el servidor al registrar el curso.'
+    });
 
     }
     

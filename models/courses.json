@@ -2,8 +2,8 @@
   {
     "id": 1,
     "name": "Informatica",
-    "price": "10000",
-    "capacity": "3",
+    "price": "2000",
+    "capacity": "10",
     "schedule": [
       {
         "day": "Lunes",
@@ -14,108 +14,49 @@
     "status": "on",
     "enrolledStudents": [
       {
-        "idStudent": 1
-      },
-      {
-        "idStudent": 2
-      },
-      {
-        "idStudent": 4
+        "idStudent": 51
       }
     ]
   },
   {
     "id": 2,
-    "name": "Diseño",
-    "price": "15000",
-    "capacity": "25",
+    "name": "Disenio",
+    "price": "5000",
+    "capacity": "20",
     "schedule": [
       {
-        "day": "Lunes",
-        "hour": "12:00"
+        "day": "Martes",
+        "hour": "10:00"
       }
     ],
     "teacher": "3",
     "status": "on",
-    "enrolledStudents": [
-      {
-        "idStudent": 34
-      },
-      {
-        "idStudent": 10
-      },
-      {
-        "idStudent": 6
-      },
-      {
-        "idStudent": 45
-      }
-    ]
+    "enrolledStudents": []
   },
   {
     "id": 3,
     "name": "Administracion",
-    "price": "20000",
-    "capacity": "30",
+    "price": "2000",
+    "capacity": "20",
     "schedule": [
       {
-        "day": "Martes",
-        "hour": "18:00"
+        "day": "Jueves",
+        "hour": "10:00"
       }
     ],
     "teacher": "4",
     "status": "on",
-    "enrolledStudents": [
-      {
-        "idStudent": 11
-      },
-      {
-        "idStudent": 22
-      },
-      {
-        "idStudent": 43
-      }
-    ]
+    "enrolledStudents": []
   },
   {
     "id": 4,
-    "name": "Marketing",
-    "price": "20000",
-    "capacity": "15",
-    "schedule": [
-      {
-        "day": "Jueves",
-        "hour": "15:00"
-      }
-    ],
-    "teacher": "5",
-    "status": "on",
-    "enrolledStudents": []
-  },
-  {
-    "id": 5,
-    "name": "Produccion",
-    "price": "30000",
-    "capacity": "30",
-    "schedule": [
-      {
-        "day": "Viernes",
-        "hour": "10:00"
-      }
-    ],
-    "teacher": "2",
-    "status": "on",
-    "enrolledStudents": []
-  },
-  {
-    "id": 6,
     "name": "Gestion",
-    "price": "25000",
-    "capacity": "15",
+    "price": "20000",
+    "capacity": "25",
     "schedule": [
       {
-        "day": "Viernes",
-        "hour": "15:00"
+        "day": "Miercoles",
+        "hour": "10:00"
       }
     ],
     "teacher": "7",

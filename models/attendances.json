@@ -38,5 +38,59 @@
         "studentId": 6
       }
     ]
+  },
+  {
+    "courseId": 1,
+    "date": "2025-05-26",
+    "students": [
+      {
+        "studentId": 1
+      }
+    ]
+  },
+  {
+    "courseId": 1,
+    "date": "2025-05-26",
+    "students": [
+      {
+        "studentId": 1
+      }
+    ]
+  },
+  {
+    "courseId": 1,
+    "date": "2025-05-26",
+    "students": [
+      {
+        "studentId": 1
+      }
+    ]
+  },
+  {
+    "courseId": 1,
+    "date": "2025-05-26",
+    "students": [
+      {
+        "studentId": 2
+      }
+    ]
+  },
+  {
+    "courseId": 3,
+    "date": "2025-05-26",
+    "students": [
+      {
+        "studentId": 11
+      }
+    ]
+  },
+  {
+    "courseId": 1,
+    "date": "2025-05-26",
+    "students": [
+      {
+        "studentId": 51
+      }
+    ]
   }
 ]

@@ -12,3 +12,5 @@ html
             input(type="password" name="password" required)
             br
             input(type="submit" "value"= "Iniciar Sesión") 
+        if error
+        p(style="color:red") #{error}

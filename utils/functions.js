@@ -11,5 +11,10 @@ export async function readData(DB_FILE)  {
 }
 
 export async function writeData(DB_FILE, data) {
-    await writeFile(DB_FILE, JSON.stringify(data, null, 2))
+    try {
+        await writeFile(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
+  } catch (error) {
+    console.error('Error al escribir el archivo JSON:', error);
+    throw error;
+  }
 }
