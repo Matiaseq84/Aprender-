@@ -3,7 +3,7 @@ extends admin-panel-layout
 block content
   h2 Cupos disponibles por curso
 
-  if cursosConCupos.length
+  if availableCourses.length
     table
       thead
         tr
@@ -12,11 +12,11 @@ block content
           th Inscriptos
           th Disponibles
       tbody
-        each curso in cursosConCupos
+        each curso in availableCourses
           tr
             td= curso.name
             td= curso.capacity
-            td= curso.usados
-            td= curso.disponibles
+            td= curso.taken
+            td= curso.availability 
   else
     p No hay cursos activos registrados.

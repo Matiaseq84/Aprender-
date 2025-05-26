@@ -1,4 +1,4 @@
-import { readData, writeData } from '../utils/functions.js'
+import { readData } from '../utils/functions.js'
 const DB_FILE = './models/teachers.json'
 
 export async function getAllTeachers() {

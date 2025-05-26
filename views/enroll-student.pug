@@ -1,0 +1,55 @@
+extends admin-panel-layout 
+
+
+block content
+   
+  h2 Inscripción
+    
+    //- Sección para mostrar mensajes de error o éxito desde el controlador
+    
+  form(action="/admin/enroll-student" method="GET")
+    label(for="courseName") Nombre del curso: 
+    select(name="courseName" required) 
+      option(value="") --Seleccionar--
+        each course in courses
+          option(value=course._id) #{course.name}
+
+    br
+
+    label(for="dni") DNI:
+    input(type="text" name="dni" class="input-text")
+
+    button(type="submit" class="btn") Buscar Alumno
+
+  if error
+    .alert.alert-danger #{error}
+  if success
+    .alert.alert-success #{success}
+
+  if student
+    h3 Alumno encontrado:
+    p Nombre: #{student.studentName}
+    p Apellido: #{student.studentLastname}
+    p DNI: #{student.dni}
+    
+    
+    if selectedCourse
+    h4 Curso seleccionado:
+    p Nombre del curso: #{selectedCourse.name}
+    p Horario:
+      each turno in selectedCourse.schedule
+        p #{turno.day} - #{turno.hour}
+  
+
+    form(action="/admin/enroll-student" method="POST")
+      input(type="hidden" name="studentId" value=student._id)
+      input(type="hidden" name="courseId" value=selectedCourse.id) 
+
+      button(type="submit" class="btn") Confirmar inscripción
+
+
+        
+        
+
+        
+        

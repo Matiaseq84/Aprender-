@@ -1,4 +1,5 @@
 import { readData, writeData } from "../utils/functions.js";
+import { getAllStudents, getStudentByDni } from "./studentController.js";
 const DB_FILE = './models/courses.json'
 
 //Función para normalizar texto (quita tildes y pone en minúscula)
@@ -50,7 +51,7 @@ export async function getFilteredCourses(req, res) {
     return matchName && matchTeacher && matchStatus;
   });
 
-  res.render('admin/buscar', { cursoEncontrado: curso });
+  res.render('buscar', { cursoEncontrado: curso });
 }
 
 export async function updateCourseData(req, res) {
@@ -67,7 +68,17 @@ export async function updateCourseData(req, res) {
   courses[index] = { ...courses[index], ...newData };
   await writeData('./models/courses.json', courses);
 
-  res.redirect('/admin/buscar');
+  res.redirect('buscar');
+}
+
+export async function getCourseByDni(dni) {
+  
+  const courses = await getAllCourses(DB_FILE)
+  
+  const course = courses.find( course => course.dni === dni)
+
+  return course
+
 }
 
 export async function deleteCourseData(req, res) {
@@ -77,5 +88,92 @@ export async function deleteCourseData(req, res) {
   courses = courses.filter(c => c.id !== parseInt(id));
   await writeData('./models/courses.json', courses);
 
-  res.redirect('/admin/buscar');
+  res.redirect('buscar');
+}
+
+export async function enrollStudent(req, res) {
+  const courses = await getAllCourses(); 
+  const { dni, courseName } = req.query;
+
+  if (!dni) {
+    
+    return res.render('enroll-student', {
+      courses,
+      student: null,
+      error: null,
+      success: null
+    });
+  }
+
+  const student = await getStudentByDni(dni);
+
+  if (!student) {
+    return res.render('enroll-student', {
+      courses,
+      student: null,
+      error: 'Alumno no encontrado',
+      success: null
+    });
+  }
+
+  const selectedCourse = courses.find(c => c.name === courseName);
+
+  return res.render('enroll-student', {
+    courses,
+    student,
+    selectedCourse,
+    error: null,
+    success: null
+  });
+}
+
+export async function registerEnrollment(req, res) {
+  const { studentId, courseId } = req.body
+  console.log(courseId, studentId)
+
+  const courses = await getAllCourses()
+  const course = courses.find(c => c.id === parseInt(courseId))
+  
+  //Validaciones
+  if(!course) {
+    return res.render('enroll-student', {
+      courses,
+      student: null,
+      error: 'Curso no encontrado',
+      success: null
+    })
+  }
+
+  //const course = courses[courseIndex]
+
+  if(course.enrolledStudents.includes(studentId)) {
+    return res.render('enroll-student', {
+      courses,
+      student: null,
+      error: 'El alumno ya está inscripto en este curso.',
+      success: null
+    })
+  }
+
+  if(course.enrolledStudents.length >= parseInt(course.capacity)) {
+    return res.render('enroll-student', {
+      courses,
+      student: null,
+      error: 'No hay más cupos disponibles en este curso',
+      success: null
+    })
+  }
+
+  //Inscribir
+  course.enrolledStudents.push({idStudent: parseInt(studentId)})
+  await writeData(DB_FILE, courses)
+
+  return res.render('enroll-student', {
+    courses,
+    student: null,
+    error: null,
+    success: 'Inscripción realizada con éxito.'
+  })
+
+
 }

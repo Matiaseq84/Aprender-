@@ -12,68 +12,53 @@ const normalize = str =>
 //Reporte: Alumnos por curso
 export async function getAlumnosPorCurso(req, res) {
   const courses = await readData(COURSES_DB);
-  const enrollments = await readData(ENROLLMENTS_DB);
   const students = await readData(STUDENTS_DB);
 
-  const cursosConAlumnos = courses.map(course => {
-    const inscriptos = enrollments.filter(e => e.courseId === course.id);
-    const alumnos = inscriptos
-      .map(e => students.find(s => s._id === e.studentId))
-      .filter(Boolean);
+  const coursesWithStudents = courses
+    .map(course => {
+      const enrolledStudents = course.enrolledStudents
+        .map(e => students.find(s => s._id === e.idStudent)) 
 
-    return {
+    return{
       name: course.name,
-      alumnos
-    };
-  });
+      students: enrolledStudents
+    } 
+  })
 
-  res.render('report-alumnos-por-curso', { cursosConAlumnos });
+  res.render('report-alumnos-por-curso', { coursesWithStudents });
 }
 
 //Reporte: Cupos disponibles por curso (solo cursos activos)
 export async function getCuposDisponibles(req, res) {
-  const courses = await readData(COURSES_DB);
-  const enrollments = await readData(ENROLLMENTS_DB);
+    const courses = await readData(COURSES_DB);
 
-  const cursosConCupos = courses
-    .filter(course => course.status === 'Activo' || 'on')//OJO QUE AHORA ES ON
-    .map(course => {
-      const inscriptos = enrollments.filter(e => e.courseId === course.id);
-      const usados = inscriptos.length;
-      const disponibles = parseInt(course.capacity || 0) - usados;
+    const availableCourses = courses
+      .filter(course => course.status === 'on')
+      .map(course => {
+        const taken = course.enrolledStudents.length
+        const availability = parseInt(course.capacity) - taken
 
-      return {
+        return {
         name: course.name,
-        capacity: course.capacity || 0,
-        usados,
-        disponibles
-      };
-    });
-
-  res.render('report-cupos-disponibles', { cursosConCupos });
+        capacity: course.capacity,
+        taken,
+        availability
+      }
+      })
+    
+  res.render('report-cupos-disponibles', { availableCourses });
 }
 
 //Reporte: Cursos completos (cantidad de inscriptos igual o mayor al cupo)
 export async function getCursosCompletos(req, res) {
-  const courses = await readData(COURSES_DB);
-  const enrollments = await readData(ENROLLMENTS_DB);
+    const courses = await readData(COURSES_DB)
 
-  const completos = courses
-    .filter(course => course.capacity)
-    .map(course => {
-      const inscriptos = enrollments.filter(e => e.courseId === course.id);
-      const inscriptosCount = inscriptos.length;
-
-      if (inscriptosCount >= parseInt(course.capacity)) {
-        return {
-          ...course,
-          inscriptos: inscriptosCount
-        };
-      }
-
-      return null;
-    })
-    .filter(Boolean); // elimina los null
-
-  res.render('report-cursos-completos', { completos });
+    const full =  courses
+      .filter( course => course.enrolledStudents.length === parseInt(course.capacity))
+      .map( course => ({
+            ...course,
+            enrolled: course.enrolledStudents.length
+      }))
+  
+  res.render('report-cursos-completos', { full });
 }

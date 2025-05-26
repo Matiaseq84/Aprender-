@@ -1,0 +1,36 @@
+extends admin-panel-layout
+
+block content
+  h2 Tomar asistencia
+
+  // Formulario para seleccionar el curso
+  form(method="GET", action="/admin/take-attendance")
+    label(for="courseId") Seleccionar curso:
+    select(name="courseId" required)
+      option(value="") -- Seleccionar --
+      each course in courses
+        option(value=course.id selected=(selectedCourse && selectedCourse.id == course.id)) #{course.name}
+    button(type="submit") Ver estudiantes
+
+  if students
+    form(method="POST", action="/admin/take-attendance")
+      input(type="hidden" name="courseId" value=selectedCourse.id)
+
+      table
+        thead
+          tr
+            th Estudiante
+            th Presente
+        tbody
+          each student in students
+            tr
+              td #{student.studentName} #{student.studentLastname}
+              td 
+                input(type="checkbox" name="presentStudents" value=student._id)
+
+      button(type="submit") Guardar asistencia
+
+  if success
+    p(style="color:green") #{success}
+  if error
+    p(style="color:red") #{error}

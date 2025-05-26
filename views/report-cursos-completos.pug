@@ -3,7 +3,7 @@ extends admin-panel-layout
 block content
   h2 Cursos Completos
 
-  if completos.length
+  if full.length
     table
       thead
         tr
@@ -11,10 +11,10 @@ block content
           th Cupo
           th Inscriptos
       tbody
-        each curso in completos
+        each curso in full
           tr
             td= curso.name
             td= curso.capacity
-            td= curso.inscriptos
+            td= curso.enrolled
   else
     p No hay cursos completos actualmente.

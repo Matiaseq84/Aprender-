@@ -2,6 +2,9 @@ import express from 'express'
 import { registerCourse } from '../controllers/adminController.js'
 import { getAllTeachers } from '../controllers/teacherController.js'
 import { registerStudent } from '../controllers/studentController.js';
+import { getAllCourses, enrollStudent, registerEnrollment } from '../controllers/courseController.js';
+import { showAttendanceForm, submitAttendance } from '../controllers/attendanceController.js';
+
 
 const router = express.Router()
 
@@ -17,7 +20,11 @@ router.get('/register-students', (req, res) => {
 });
 
 // Ruta POST para PROCESAR el formulario de registro de estudiantes
-router.post('/register-students', registerStudent); // Esta función debe estar en studentController.js
+router.post('/register-students', registerStudent); // Esta función debe estar en studentController.
+
+router.get('/enroll-student', enrollStudent)
+
+router.post('/enroll-student', registerEnrollment)
 
 
 router.get('/register-course', async (req,res) => {
@@ -26,9 +33,15 @@ router.get('/register-course', async (req,res) => {
 })
 
 router.get('/buscar', (req, res) => {
-  res.render('admin/buscar', { alumnoEncontrado: null, cursoEncontrado: null });
+  res.render('buscar', { alumnoEncontrado: null, cursoEncontrado: null });
 });
 
+
+
 router.post('/register-course', registerCourse)
+
+router.get('/take-attendance', showAttendanceForm);
+
+router.post('/take-attendance', submitAttendance);
 
 export default router

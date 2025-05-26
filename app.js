@@ -6,6 +6,7 @@ import studentRoutes from './routes/studentsRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
 
 
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -26,6 +27,7 @@ app.use('/admin', adminRouter)
 app.use('/courses', courseRoutes);
 app.use('/students', studentRoutes);
 app.use('/reportes', reportRoutes);
+
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo  en http://localhost:${PORT}`)

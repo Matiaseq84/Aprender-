@@ -2,17 +2,15 @@
 import { getAllCourses, addCourse } from "../controllers/courseController.js";
 import { Course } from "../classes/Course.js"
 
-
-
-
 const DB_FILE = './models/courses.json'
 
 //Función para registrar un nuevo curso y renderizar la vista de registro
 export async function registerCourse(req, res) {
     try {
-        const { courseName, coursePrice, capacity, hours, days, teacher, status }  = req.body
+        const { courseName, coursePrice, courseCapacity, hours, days, teacher, status }  = req.body
     
     let schedule = []
+    let enrolledStudents = []
     
     for (let i = 0 ; i < days.length; i++) {
         schedule.push({
@@ -28,10 +26,11 @@ export async function registerCourse(req, res) {
         courses.length > 0 ? courses[courses.length - 1].id + 1 : 1,
         courseName,
         coursePrice,
-        capacity,
+        courseCapacity,
         schedule,
         teacher,
-        status
+        status,
+        enrolledStudents
     )
         
     addCourse(newCourse)

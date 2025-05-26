@@ -1,16 +1,42 @@
 [
-    {
-        "_id": 1,
-        "studentId": 1,
-        "courseId": 1,
-        "date": "2025-05-21",
-        "present": true
-    },
-     {
-        "_id": 2,
-        "studentId": 6,
-        "courseId": 3,
-        "date": "2025-05-21",
-        "present": true
-    }
+  {
+    "_id": 1,
+    "students": [
+      {
+        "studentId": 1
+      },
+      {
+        "studentId": 2
+      },
+      {
+        "studentId": 3
+      }
+    ],
+    "courseId": 1,
+    "date": "2025-05-21"
+  },
+  {
+    "courseId": 1,
+    "date": "2025-05-26",
+    "students": [
+      {
+        "studentId": 1
+      },
+      {
+        "studentId": 2
+      }
+    ]
+  },
+  {
+    "courseId": 2,
+    "date": "2025-05-26",
+    "students": [
+      {
+        "studentId": 10
+      },
+      {
+        "studentId": 6
+      }
+    ]
+  }
 ]

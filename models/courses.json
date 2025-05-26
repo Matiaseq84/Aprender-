@@ -1,74 +1,125 @@
 [
   {
     "id": 1,
-    "name": "Informática 1",
-    "price": "500",
-    "capacity": "25",
-    "schedule": [
-      {
-        "day": "Lunes",
-        "hour": "11:00"
-      }
-    ],
-    "teacher": "Pablo Cano",
-    "status": "Activo"
-  },
-  {
-    "id": 2,
-    "name": "Administración",
-    "price": "500",
-    "capacity": "1",
-    "schedule": [
-      {
-        "day": "Miércoles",
-        "hour": "11:00"
-      }
-    ],
-    "teacher": "Ana Gómez",
-    "status": "Activo"
-  },
-  {
-    "id": 3,
     "name": "Informatica",
-    "price": "100",
+    "price": "10000",
+    "capacity": "3",
     "schedule": [
       {
         "day": "Lunes",
         "hour": "10:00"
-      },
-      {
-        "day": "Martes",
-        "hour": "12:00"
       }
     ],
     "teacher": "1",
-    "status": "on"
+    "status": "on",
+    "enrolledStudents": [
+      {
+        "idStudent": 1
+      },
+      {
+        "idStudent": 2
+      },
+      {
+        "idStudent": 4
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Diseño",
+    "price": "15000",
+    "capacity": "25",
+    "schedule": [
+      {
+        "day": "Lunes",
+        "hour": "12:00"
+      }
+    ],
+    "teacher": "3",
+    "status": "on",
+    "enrolledStudents": [
+      {
+        "idStudent": 34
+      },
+      {
+        "idStudent": 10
+      },
+      {
+        "idStudent": 6
+      },
+      {
+        "idStudent": 45
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Administracion",
+    "price": "20000",
+    "capacity": "30",
+    "schedule": [
+      {
+        "day": "Martes",
+        "hour": "18:00"
+      }
+    ],
+    "teacher": "4",
+    "status": "on",
+    "enrolledStudents": [
+      {
+        "idStudent": 11
+      },
+      {
+        "idStudent": 22
+      },
+      {
+        "idStudent": 43
+      }
+    ]
   },
   {
     "id": 4,
-    "name": "Produccion",
-    "price": "100",
+    "name": "Marketing",
+    "price": "20000",
+    "capacity": "15",
     "schedule": [
       {
-        "day": "Miercoles",
-        "hour": "11:00"
+        "day": "Jueves",
+        "hour": "15:00"
       }
     ],
-    "teacher": "2",
-    "status": "Activo",
-    "capacity": "1"
+    "teacher": "5",
+    "status": "on",
+    "enrolledStudents": []
   },
   {
     "id": 5,
-    "name": "Gestion",
-    "price": "100",
+    "name": "Produccion",
+    "price": "30000",
+    "capacity": "30",
     "schedule": [
       {
-        "day": "Miercoles",
-        "hour": "11:00"
+        "day": "Viernes",
+        "hour": "10:00"
       }
     ],
     "teacher": "2",
-    "status": "on"
+    "status": "on",
+    "enrolledStudents": []
+  },
+  {
+    "id": 6,
+    "name": "Gestion",
+    "price": "25000",
+    "capacity": "15",
+    "schedule": [
+      {
+        "day": "Viernes",
+        "hour": "15:00"
+      }
+    ],
+    "teacher": "7",
+    "status": "on",
+    "enrolledStudents": []
   }
 ]

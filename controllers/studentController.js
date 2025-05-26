@@ -101,7 +101,7 @@ export async function getFilteredStudents(req, res) {
     });
   }
 
-  res.render('admin/buscar', { alumnoEncontrado: alumno });
+  res.render('buscar', { alumnoEncontrado: alumno });
 }
 
 export async function updateStudent(req, res) {
@@ -118,7 +118,7 @@ export async function updateStudent(req, res) {
   students[index] = { ...students[index], ...newData };
   await writeData(DB_FILE, students);
 
-  res.redirect('/admin/buscar');
+  res.redirect('buscar');
 }
 
 export async function deleteStudent(req, res) {
@@ -128,5 +128,31 @@ export async function deleteStudent(req, res) {
   students = students.filter(s => s._id !== parseInt(id));
 
   await writeData(DB_FILE, students);
-  res.redirect('/admin/buscar');
+  res.redirect('buscar');
+}
+
+export async function getAllStudents(req, res) {
+  const data = await readData(DB_FILE)
+  return data
+}
+
+export async function getStudentByDni(dni) {
+  
+  const students = await getAllStudents(DB_FILE)
+  
+  const student = students.find( student => student.dni === dni)
+
+  return student
+
+}
+
+export async function getStudentById(id) {
+  
+  console.log('desde aquí', id)
+  const students = await getAllStudents(DB_FILE)
+  
+  const student = students.find( student => student._id === id)
+
+  return student
+
 }
