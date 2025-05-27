@@ -2,8 +2,8 @@
   {
     "id": 1,
     "name": "Informatica",
-    "price": "2000",
-    "capacity": "10",
+    "price": "20000",
+    "capacity": "20",
     "schedule": [
       {
         "day": "Lunes",
@@ -14,15 +14,21 @@
     "status": "on",
     "enrolledStudents": [
       {
-        "idStudent": 51
+        "idStudent": 56
+      },
+      {
+        "idStudent": 50
+      },
+      {
+        "idStudent": 13
       }
     ]
   },
   {
     "id": 2,
     "name": "Disenio",
-    "price": "5000",
-    "capacity": "20",
+    "price": "20000",
+    "capacity": "10",
     "schedule": [
       {
         "day": "Martes",
@@ -36,7 +42,7 @@
   {
     "id": 3,
     "name": "Administracion",
-    "price": "2000",
+    "price": "30000",
     "capacity": "20",
     "schedule": [
       {
@@ -50,13 +56,43 @@
   },
   {
     "id": 4,
-    "name": "Gestion",
+    "name": "Marketing",
     "price": "20000",
     "capacity": "25",
     "schedule": [
       {
-        "day": "Miercoles",
+        "day": "Viernes",
         "hour": "10:00"
+      }
+    ],
+    "teacher": "5",
+    "status": "on",
+    "enrolledStudents": []
+  },
+  {
+    "id": 5,
+    "name": "Produccion",
+    "price": "20000",
+    "capacity": "10",
+    "schedule": [
+      {
+        "day": "Martes",
+        "hour": "15:00"
+      }
+    ],
+    "teacher": "2",
+    "status": "on",
+    "enrolledStudents": []
+  },
+  {
+    "id": 6,
+    "name": "Gestion",
+    "price": "40000",
+    "capacity": "15",
+    "schedule": [
+      {
+        "day": "Martes",
+        "hour": "18:00"
       }
     ],
     "teacher": "7",

@@ -118,7 +118,7 @@ export async function updateStudent(req, res) {
   students[index] = { ...students[index], ...newData };
   await writeData(DB_FILE, students);
 
-  res.redirect('buscar');
+  res.redirect('/admin/buscar');
 }
 
 export async function deleteStudent(req, res) {
@@ -128,7 +128,7 @@ export async function deleteStudent(req, res) {
   students = students.filter(s => s._id !== parseInt(id));
 
   await writeData(DB_FILE, students);
-  res.redirect('buscar');
+  res.redirect('/admin/buscar');
 }
 
 export async function getAllStudents(req, res) {

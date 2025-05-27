@@ -1,36 +1,43 @@
 extends admin-panel-layout
 
 block content
-  h2 Tomar asistencia
+  h1 Registrar Asistencia
 
-  // Formulario para seleccionar el curso
+  // FORM GET con curso + clase
   form(method="GET", action="/admin/take-attendance")
-    label(for="courseId") Seleccionar curso:
-    select(name="courseId" required)
-      option(value="") -- Seleccionar --
+    label(for="courseId") Curso:
+    select(name="courseId", id="courseId", required)
+      option(value="") Seleccionar curso
       each course in courses
-        option(value=course.id selected=(selectedCourse && selectedCourse.id == course.id)) #{course.name}
-    button(type="submit") Ver estudiantes
+        option(value=course.id selected=course.id==selectedCourseId) #{course.name}
 
-  if students
+    label(for="classNumber") Clase:
+    select(name="classNumber", id="classNumber", required)
+      option(value="") Seleccionar clase
+      each i in Array(30).fill().map((_, idx) => idx + 1)
+        option(value=i selected=classNumber==i) Clase #{i}
+
+    button(type="submit") Buscar clase
+
+  // Si están seleccionados ambos, mostrar asistencia
+  if selectedCourseId && classNumber
     form(method="POST", action="/admin/take-attendance")
-      input(type="hidden" name="courseId" value=selectedCourse.id)
+      input(type="hidden", name="courseId", value=selectedCourseId)
+      input(type="hidden", name="classNumber", value=classNumber)
 
-      table
-        thead
-          tr
-            th Estudiante
-            th Presente
-        tbody
-          each student in students
+      if students.length
+        table
+          thead
             tr
-              td #{student.studentName} #{student.studentLastname}
-              td 
-                input(type="checkbox" name="presentStudents" value=student._id)
-
-      button(type="submit") Guardar asistencia
-
+              th Estudiante
+              th Asistió
+          tbody
+            each student in students
+              tr
+                td #{student.studentName} #{student.studentLastname}
+                td: input(type="checkbox", name="presents[]", value=student._id)
+        button(type="submit") Guardar Asistencia
+      else
+        p No hay estudiantes inscriptos.
   if success
-    p(style="color:green") #{success}
-  if error
-    p(style="color:red") #{error}
+        p(style="color:green") #{success}

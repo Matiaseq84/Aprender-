@@ -3,7 +3,7 @@ import { registerCourse } from '../controllers/adminController.js'
 import { getAllTeachers } from '../controllers/teacherController.js'
 import { registerStudent } from '../controllers/studentController.js';
 import { getAllCourses, enrollStudent, registerEnrollment } from '../controllers/courseController.js';
-import { showAttendanceForm, submitAttendance } from '../controllers/attendanceController.js';
+import { renderAttendanceForm, saveAttendance } from '../controllers/attendanceController.js';
 
 
 const router = express.Router()
@@ -40,8 +40,7 @@ router.get('/buscar', (req, res) => {
 
 router.post('/register-course', registerCourse)
 
-router.get('/take-attendance', showAttendanceForm);
-
-router.post('/take-attendance', submitAttendance);
+router.get('/take-attendance', renderAttendanceForm); 
+router.post('/take-attendance', saveAttendance); 
 
 export default router

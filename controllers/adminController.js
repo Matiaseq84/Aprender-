@@ -1,8 +1,8 @@
 
 import { getAllCourses, addCourse } from "../controllers/courseController.js";
 import { Course } from "../classes/Course.js"
-import { readData } from "../utils/functions.js";
-import { getAllTeachers } from "./teacherController.js";
+import {addAttendanceEntry} from "../controllers/attendanceController.js"
+import { getAllTeachers } from "../controllers/teacherController.js";
 
 const DB_FILE = './models/courses.json'
 
@@ -45,9 +45,12 @@ export async function registerCourse(req, res) {
     )
 
     console.log(newCourse)
-        
-    await addCourse(newCourse)
 
+    await addAttendanceEntry(newCourse.id, days)
+
+    await addCourse(newCourse)
+        
+    
     const teachers = await getAllTeachers()
 
     res.render('register-course', {
@@ -58,11 +61,15 @@ export async function registerCourse(req, res) {
     
     } catch(error) {
         console.error('Error', error)
-        const teachers = await getAllTeachers()
-        res.status(500).render('register-course', {
-            teachers,
-            error: 'Error en el servidor al registrar el curso.'
-    });
+        try {
+      const teachers = await getAllTeachers();
+      res.status(500).render('register-course', {
+        teachers,
+        error: 'Error en el servidor al registrar el curso.'
+      });
+    } catch (e) {
+      res.status(500).send('Error fatal del servidor');
+    }
 
     }
     

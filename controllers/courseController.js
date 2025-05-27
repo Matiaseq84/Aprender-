@@ -14,8 +14,6 @@ export async function getAllCourses() {
     console.error('Error al leer el archivo')
     throw error
   }
-    
-    
 }
 
 export async function addCourse(data) {
@@ -64,7 +62,7 @@ export async function getFilteredCourses(req, res) {
     return matchName && matchTeacher && matchStatus;
   });
 
-  res.render('buscar', { cursoEncontrado: curso });
+  res.render('/admin/buscar', { cursoEncontrado: curso });
 }
 
 export async function updateCourseData(req, res) {
@@ -81,7 +79,7 @@ export async function updateCourseData(req, res) {
   courses[index] = { ...courses[index], ...newData };
   await writeData('./models/courses.json', courses);
 
-  res.redirect('buscar');
+  res.redirect('/admin/buscar');
 }
 
 export async function getCourseByDni(dni) {
@@ -101,7 +99,7 @@ export async function deleteCourseData(req, res) {
   courses = courses.filter(c => c.id !== parseInt(id));
   await writeData('./models/courses.json', courses);
 
-  res.redirect('buscar');
+  res.redirect('/admin/buscar');
 }
 
 export async function enrollStudent(req, res) {

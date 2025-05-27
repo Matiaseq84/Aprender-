@@ -13,7 +13,7 @@ export async function validateLogin(req, res) {
             return res.status(401).render('login', { error: 'Usuario o contraseña incorrecta' });
         }
 
-        res.redirect('/admin/admin-panel');
+        res.redirect('admin/admin-panel');
 
     } catch(error) {
         console.error('Error al leer el archivo', error)
