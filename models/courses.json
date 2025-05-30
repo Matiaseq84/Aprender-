@@ -21,6 +21,12 @@
       },
       {
         "idStudent": 13
+      },
+      {
+        "idStudent": 6
+      },
+      {
+        "idStudent": 6
       }
     ]
   },
@@ -37,7 +43,14 @@
     ],
     "teacher": "3",
     "status": "on",
-    "enrolledStudents": []
+    "enrolledStudents": [
+      {
+        "idStudent": 55
+      },
+      {
+        "idStudent": 56
+      }
+    ]
   },
   {
     "id": 3,
@@ -93,6 +106,21 @@
       {
         "day": "Martes",
         "hour": "18:00"
+      }
+    ],
+    "teacher": "7",
+    "status": "on",
+    "enrolledStudents": []
+  },
+  {
+    "id": 7,
+    "name": "Gestion",
+    "price": "5",
+    "capacity": "1",
+    "schedule": [
+      {
+        "day": "Viernes",
+        "hour": "22:00"
       }
     ],
     "teacher": "7",
