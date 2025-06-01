@@ -1,11 +1,11 @@
 [
   {
-    "_id": 1,
-    "studentName": "Pablo",
-    "studentLastname": "Cano",
-    "dni": "30464646",
-    "email": "pablo@mail.com",
-    "tel": "123458"
+    "_id": 2,
+    "studentName": "Lucía",
+    "studentLastname": "Ríos",
+    "dni": 30888999,
+    "email": "lucia@mail.com",
+    "tel": 123456
   },
   {
     "_id": 2,
@@ -44,7 +44,7 @@
     "studentName": "Pepe",
     "studentLastname": "Mujica",
     "dni": "22222222",
-    "email": "pepe@gmail.com",
+    "email": "pepe1@gmail.com",
     "tel": "4443068"
   },
   {

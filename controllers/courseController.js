@@ -62,7 +62,10 @@ export async function getFilteredCourses(req, res) {
     return matchName && matchTeacher && matchStatus;
   });
 
-  res.render('/admin/buscar', { cursoEncontrado: curso });
+  //ACA NO FUNCIONABA LA RUTA ES SIN / Y SIN /admin
+  res.render('buscar', { cursoEncontrado: curso });
+  //res.render('/admin/buscar', { cursoEncontrado: curso });
+  //res.render('/buscar', { cursoEncontrado: curso });
 }
 
 export async function updateCourseData(req, res) {

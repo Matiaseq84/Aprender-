@@ -8,3 +8,4 @@ router.post('/update/:id', updateStudent);
 router.post('/delete/:id', deleteStudent);
 
 export default router;
+
