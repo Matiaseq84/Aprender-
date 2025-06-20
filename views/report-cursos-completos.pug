@@ -1,0 +1,20 @@
+extends admin-panel-layout
+
+block content
+  h2 Cursos Completos
+
+  if full.length
+    table
+      thead
+        tr
+          th Nombre
+          th Cupo
+          th Inscriptos
+      tbody
+        each curso in full
+          tr
+            td= curso.name
+            td= curso.capacity
+            td= curso.enrolled
+  else
+    p No hay cursos completos actualmente.

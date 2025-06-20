@@ -1,0 +1,130 @@
+[
+  {
+    "id": 1,
+    "name": "Informatica",
+    "price": "20000",
+    "capacity": "20",
+    "schedule": [
+      {
+        "day": "Lunes",
+        "hour": "10:00"
+      }
+    ],
+    "teacher": "1",
+    "status": "on",
+    "enrolledStudents": [
+      {
+        "idStudent": 56
+      },
+      {
+        "idStudent": 50
+      },
+      {
+        "idStudent": 13
+      },
+      {
+        "idStudent": 6
+      },
+      {
+        "idStudent": 6
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Disenio",
+    "price": "20000",
+    "capacity": "10",
+    "schedule": [
+      {
+        "day": "Martes",
+        "hour": "10:00"
+      }
+    ],
+    "teacher": "3",
+    "status": "on",
+    "enrolledStudents": [
+      {
+        "idStudent": 55
+      },
+      {
+        "idStudent": 56
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Administracion",
+    "price": "30000",
+    "capacity": "20",
+    "schedule": [
+      {
+        "day": "Jueves",
+        "hour": "10:00"
+      }
+    ],
+    "teacher": "4",
+    "status": "on",
+    "enrolledStudents": []
+  },
+  {
+    "id": 4,
+    "name": "Marketing",
+    "price": "20000",
+    "capacity": "25",
+    "schedule": [
+      {
+        "day": "Viernes",
+        "hour": "10:00"
+      }
+    ],
+    "teacher": "5",
+    "status": "on",
+    "enrolledStudents": []
+  },
+  {
+    "id": 5,
+    "name": "Produccion",
+    "price": "20000",
+    "capacity": "10",
+    "schedule": [
+      {
+        "day": "Martes",
+        "hour": "15:00"
+      }
+    ],
+    "teacher": "2",
+    "status": "on",
+    "enrolledStudents": []
+  },
+  {
+    "id": 6,
+    "name": "Gestion",
+    "price": "40000",
+    "capacity": "15",
+    "schedule": [
+      {
+        "day": "Martes",
+        "hour": "18:00"
+      }
+    ],
+    "teacher": "7",
+    "status": "on",
+    "enrolledStudents": []
+  },
+  {
+    "id": 7,
+    "name": "Gestion",
+    "price": "5",
+    "capacity": "1",
+    "schedule": [
+      {
+        "day": "Viernes",
+        "hour": "22:00"
+      }
+    ],
+    "teacher": "7",
+    "status": "on",
+    "enrolledStudents": []
+  }
+]

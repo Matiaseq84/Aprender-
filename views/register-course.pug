@@ -1,0 +1,72 @@
+extends admin-panel-layout  
+
+block content
+    h2 Registrar curso
+    form(action="/admin/register-course" method="POST")
+        label(for="courseName") Nombre del curso: 
+        select(name="courseName")
+            option(value="Informatica") Informática
+            option(value="Disenio") Diseño Gráfico y Multimedial
+            option(value="Administracion") Administración de Empresas
+            option(value="Marketing") Marketing Digital y Redes Sociales
+            option(value="Produccion") Producción Audiovisual
+            option(value="Gestion") Gestión Contable y Tributaria
+
+        br
+
+        label(for="coursePrice") Precio:
+        input(type="number" name="coursePrice" required)
+        br
+
+        label(for="courseCapacity") Cupo:
+        input(type="number" name="courseCapacity" required)
+        br
+
+        div#schedules
+            div.schedule
+                select(name="days[]" required)
+                    option(value="Lunes") Lunes
+                    option(value="Martes") Martes
+                    option(value="Miercoles") Miércoles
+                    option(value="Jueves") Jueves
+                    option(value="Viernes") Viernes
+            
+                input(type="time" name="hours[]" required)
+        //button(type="button" onclick="addSchedules()") Agregar otro día y horario
+        
+
+        label(for="teacher") Profesor/a
+        select(name="teacher" required)
+            option(value="") --Seleccionar--
+            each teacher in teachers
+                option(value=teacher._id) #{teacher.name}
+        br
+
+        label(for="status") Activo
+        input(type="radio" name="status" required)
+        br        
+
+        button(type="submit") Registrar
+
+    script.
+        function addSchedules() {
+            const container = document.getElementById('schedules')
+            const scheduleDiv = document.createElement('DIV')
+            scheduleDiv.classList.add('schedule')
+            scheduleDiv.innerHTML = `
+                <select name= "days[]" required>
+                    <option value="Lunes">Lunes</option>
+                    <option value="Martes">Martes</option>
+                    <option value="Miercoles">Miércoles</option>
+                    <option value="Jueves">Jueves</option>
+                    <option value="Viernes">Viernes</option>
+                </select>
+                <input type="time" name="hours[]" required>
+            `;
+            container.appendChild(scheduleDiv)
+        }
+
+    if success
+        p(style="color:green") #{success}
+    if error
+        p(style="color:red") #{error}

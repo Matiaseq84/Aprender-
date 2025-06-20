@@ -1,0 +1,39 @@
+[
+    {
+    "_id": 1,
+    "name": "Julia Sánchez",
+    "speciality": "Informática"
+    },
+    {
+    "_id": 2,
+    "name": "Mario López",
+    "speciality": "Producción Audiovisual"
+    },
+    {
+    "_id": 3,
+    "name": "Carlos Vidal",
+    "speciality": "Diseño gráfico y multimedial"
+    },
+    {
+    "_id": 4,
+    "name": "Romina Palacios",
+    "speciality": "Administración de Empresas"
+    },
+    {
+    "_id": 5,
+    "name": "Ramiro Rodriguez",
+    "speciality": "Marketing Digital y Redes Sociales"
+    },
+    {
+    "_id": 6,
+    "name": "Mario López",
+    "speciality": "Gestión de Recursos Humanos"
+    },
+    {
+    "_id": 7,
+    "name": "Gabriela Méndez",
+    "speciality": "Gestión Contable y Tributaria"
+    }
+
+
+]

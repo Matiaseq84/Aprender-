@@ -1,0 +1,43 @@
+extends admin-panel-layout
+
+block content
+  h1 Registrar Asistencia
+
+  // FORM GET con curso + clase
+  form(method="GET", action="/admin/take-attendance")
+    label(for="courseId") Curso:
+    select(name="courseId", id="courseId", required)
+      option(value="") Seleccionar curso
+      each course in courses
+        option(value=course.id selected=course.id==selectedCourseId) #{course.name}
+
+    label(for="classNumber") Clase:
+    select(name="classNumber", id="classNumber", required)
+      option(value="") Seleccionar clase
+      each i in Array(30).fill().map((_, idx) => idx + 1)
+        option(value=i selected=classNumber==i) Clase #{i}
+
+    button(type="submit") Buscar clase
+
+  // Si están seleccionados ambos, mostrar asistencia
+  if selectedCourseId && classNumber
+    form(method="POST", action="/admin/take-attendance")
+      input(type="hidden", name="courseId", value=selectedCourseId)
+      input(type="hidden", name="classNumber", value=classNumber)
+
+      if students.length
+        table
+          thead
+            tr
+              th Estudiante
+              th Asistió
+          tbody
+            each student in students
+              tr
+                td #{student.studentName} #{student.studentLastname}
+                td: input(type="checkbox", name="presents[]", value=student._id)
+        button(type="submit") Guardar Asistencia
+      else
+        p No hay estudiantes inscriptos.
+  if success
+        p(style="color:green") #{success}

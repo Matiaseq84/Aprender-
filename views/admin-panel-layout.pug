@@ -1,0 +1,38 @@
+doctype html 
+html 
+  head 
+    title Panel Administrador
+    link(rel="stylesheet", href="/css/styles.css")
+        
+  body 
+    header
+      h1 PANEL ADMINISTRATIVO
+    .container  
+      .sidebar    
+        nav 
+        
+          ul 
+            li: a(href="/admin/register-students") REGISTRAR ALUMNO 
+            li: a(href="/admin/enroll-student") REGISTRAR INSCRIPCIÓN
+            li: a(href="/admin/register-course") REGISTRAR CURSO
+            li: a(href="/admin/take-attendance") REGISTRAR ASISTENCIA
+            li: a(href="/admin/buscar") BUSCAR    
+            li 
+              a#reportes-toggle(href="#") REPORTES
+              ul#reportes-submenu(class="submenu hidden")
+                li: a(href="/reportes/alumnos-por-curso") Alumnos por Curso
+                li: a(href="/reportes/cupos-disponibles") Cupos Disponibles
+                li: a(href="/reportes/cursos-completos") Cursos Completos
+      main.content   
+        block content
+script.
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggle = document.getElementById('reportes-toggle');
+    const submenu = document.getElementById('reportes-submenu');
+
+    toggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      submenu.classList.toggle('hidden');
+    });
+  });
+
