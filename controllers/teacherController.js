@@ -1,6 +1,4 @@
 import Teacher from '../models/Teacher.js'
-import { readData } from '../utils/functions.js'
-const DB_FILE = './models/teachers.json'
 
 export async function initializeTeachers() {
   const teachers = [

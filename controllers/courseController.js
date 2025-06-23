@@ -1,11 +1,9 @@
-import { readData, writeData } from "../utils/functions.js";
-
 import { addAttendanceEntry } from "./attendanceController.js";
 import { getAllTeachers } from "./teacherController.js";
 import Course from "../models/Course.js"
 import Student from "../models/Student.js"
 import Teacher from "../models/Teacher.js";
-const DB_FILE = './models/courses.json'
+
 
 //Función para normalizar texto (quita tildes y pone en minúscula)
 const normalize = str =>
