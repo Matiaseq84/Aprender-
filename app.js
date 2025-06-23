@@ -5,10 +5,13 @@ import courseRoutes from './routes/coursesRoutes.js';
 import studentRoutes from './routes/studentsRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
 import * as Teachers from './controllers/teacherController.js'
+import * as Users from './controllers/loginController.js'
 import connectDB from './db.js';
 
 connectDB().then(async () => {
-    await Teachers.initializeTeachers()
+    await Teachers.initializeTeachers(),
+    await Users.initializeUsers()
+
 })
 const app = express();
 const PORT = process.env.PORT || 3000;

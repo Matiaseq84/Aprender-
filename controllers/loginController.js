@@ -1,13 +1,29 @@
-import { readData } from '../utils/functions.js'
-const DB_FILE = './models/users.json'
+import User from '../models/User.js'
+
+export async function initializeUsers(req, res) {
+    try {
+        const exists = await User.findOne({username: 'admin'})
+
+        if(!exists) {
+            await User.create({
+                username: 'admin',
+                password: 'admin',
+                role: 'admin'
+            })
+        }
+
+    } catch (error) {
+        console.error('Error inicializando usuarios: ', error)
+        res.status(500).send('Error en el servidor')
+    }
+}
 
 export async function validateLogin(req, res) {
     const {username, password} = req.body
     
     try {
-        const users = await readData(DB_FILE)
-        console.log(users)
-        const user = users.find(user => user.username === username)
+        
+        const user = await User.findOne({username})
 
         if (!user || user.password !== password) {
             return res.status(401).render('login', { error: 'Usuario o contraseña incorrecta' });
