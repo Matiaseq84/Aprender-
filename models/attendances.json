@@ -1746,5 +1746,470 @@
         "presents": []
       }
     ]
+  },
+  {
+    "courseId": "685968307d8985168df2e858",
+    "classes": [
+      {
+        "numberClass": 1,
+        "date": "2025-06-23",
+        "presents": []
+      },
+      {
+        "numberClass": 2,
+        "date": "2025-06-30",
+        "presents": []
+      },
+      {
+        "numberClass": 3,
+        "date": "2025-07-07",
+        "presents": []
+      },
+      {
+        "numberClass": 4,
+        "date": "2025-07-14",
+        "presents": []
+      },
+      {
+        "numberClass": 5,
+        "date": "2025-07-21",
+        "presents": []
+      },
+      {
+        "numberClass": 6,
+        "date": "2025-07-28",
+        "presents": []
+      },
+      {
+        "numberClass": 7,
+        "date": "2025-08-04",
+        "presents": []
+      },
+      {
+        "numberClass": 8,
+        "date": "2025-08-11",
+        "presents": []
+      },
+      {
+        "numberClass": 9,
+        "date": "2025-08-18",
+        "presents": []
+      },
+      {
+        "numberClass": 10,
+        "date": "2025-08-25",
+        "presents": []
+      },
+      {
+        "numberClass": 11,
+        "date": "2025-09-01",
+        "presents": []
+      },
+      {
+        "numberClass": 12,
+        "date": "2025-09-08",
+        "presents": []
+      },
+      {
+        "numberClass": 13,
+        "date": "2025-09-15",
+        "presents": []
+      },
+      {
+        "numberClass": 14,
+        "date": "2025-09-22",
+        "presents": []
+      },
+      {
+        "numberClass": 15,
+        "date": "2025-09-29",
+        "presents": []
+      },
+      {
+        "numberClass": 16,
+        "date": "2025-10-06",
+        "presents": []
+      },
+      {
+        "numberClass": 17,
+        "date": "2025-10-13",
+        "presents": []
+      },
+      {
+        "numberClass": 18,
+        "date": "2025-10-20",
+        "presents": []
+      },
+      {
+        "numberClass": 19,
+        "date": "2025-10-27",
+        "presents": []
+      },
+      {
+        "numberClass": 20,
+        "date": "2025-11-03",
+        "presents": []
+      },
+      {
+        "numberClass": 21,
+        "date": "2025-11-10",
+        "presents": []
+      },
+      {
+        "numberClass": 22,
+        "date": "2025-11-17",
+        "presents": []
+      },
+      {
+        "numberClass": 23,
+        "date": "2025-11-24",
+        "presents": []
+      },
+      {
+        "numberClass": 24,
+        "date": "2025-12-01",
+        "presents": []
+      },
+      {
+        "numberClass": 25,
+        "date": "2025-12-08",
+        "presents": []
+      },
+      {
+        "numberClass": 26,
+        "date": "2025-12-15",
+        "presents": []
+      },
+      {
+        "numberClass": 27,
+        "date": "2025-12-22",
+        "presents": []
+      },
+      {
+        "numberClass": 28,
+        "date": "2025-12-29",
+        "presents": []
+      },
+      {
+        "numberClass": 29,
+        "date": "2026-01-05",
+        "presents": []
+      },
+      {
+        "numberClass": 30,
+        "date": "2026-01-12",
+        "presents": []
+      }
+    ]
+  },
+  {
+    "courseId": "68596aa287bbc2d016465285",
+    "classes": [
+      {
+        "numberClass": 1,
+        "date": "2025-06-23",
+        "presents": []
+      },
+      {
+        "numberClass": 2,
+        "date": "2025-06-30",
+        "presents": []
+      },
+      {
+        "numberClass": 3,
+        "date": "2025-07-07",
+        "presents": []
+      },
+      {
+        "numberClass": 4,
+        "date": "2025-07-14",
+        "presents": []
+      },
+      {
+        "numberClass": 5,
+        "date": "2025-07-21",
+        "presents": []
+      },
+      {
+        "numberClass": 6,
+        "date": "2025-07-28",
+        "presents": []
+      },
+      {
+        "numberClass": 7,
+        "date": "2025-08-04",
+        "presents": []
+      },
+      {
+        "numberClass": 8,
+        "date": "2025-08-11",
+        "presents": []
+      },
+      {
+        "numberClass": 9,
+        "date": "2025-08-18",
+        "presents": []
+      },
+      {
+        "numberClass": 10,
+        "date": "2025-08-25",
+        "presents": []
+      },
+      {
+        "numberClass": 11,
+        "date": "2025-09-01",
+        "presents": []
+      },
+      {
+        "numberClass": 12,
+        "date": "2025-09-08",
+        "presents": []
+      },
+      {
+        "numberClass": 13,
+        "date": "2025-09-15",
+        "presents": []
+      },
+      {
+        "numberClass": 14,
+        "date": "2025-09-22",
+        "presents": []
+      },
+      {
+        "numberClass": 15,
+        "date": "2025-09-29",
+        "presents": []
+      },
+      {
+        "numberClass": 16,
+        "date": "2025-10-06",
+        "presents": []
+      },
+      {
+        "numberClass": 17,
+        "date": "2025-10-13",
+        "presents": []
+      },
+      {
+        "numberClass": 18,
+        "date": "2025-10-20",
+        "presents": []
+      },
+      {
+        "numberClass": 19,
+        "date": "2025-10-27",
+        "presents": []
+      },
+      {
+        "numberClass": 20,
+        "date": "2025-11-03",
+        "presents": []
+      },
+      {
+        "numberClass": 21,
+        "date": "2025-11-10",
+        "presents": []
+      },
+      {
+        "numberClass": 22,
+        "date": "2025-11-17",
+        "presents": []
+      },
+      {
+        "numberClass": 23,
+        "date": "2025-11-24",
+        "presents": []
+      },
+      {
+        "numberClass": 24,
+        "date": "2025-12-01",
+        "presents": []
+      },
+      {
+        "numberClass": 25,
+        "date": "2025-12-08",
+        "presents": []
+      },
+      {
+        "numberClass": 26,
+        "date": "2025-12-15",
+        "presents": []
+      },
+      {
+        "numberClass": 27,
+        "date": "2025-12-22",
+        "presents": []
+      },
+      {
+        "numberClass": 28,
+        "date": "2025-12-29",
+        "presents": []
+      },
+      {
+        "numberClass": 29,
+        "date": "2026-01-05",
+        "presents": []
+      },
+      {
+        "numberClass": 30,
+        "date": "2026-01-12",
+        "presents": []
+      }
+    ]
+  },
+  {
+    "courseId": "68597ac075510066a763718d",
+    "classes": [
+      {
+        "numberClass": 1,
+        "date": "2025-06-23",
+        "presents": []
+      },
+      {
+        "numberClass": 2,
+        "date": "2025-06-30",
+        "presents": []
+      },
+      {
+        "numberClass": 3,
+        "date": "2025-07-07",
+        "presents": []
+      },
+      {
+        "numberClass": 4,
+        "date": "2025-07-14",
+        "presents": []
+      },
+      {
+        "numberClass": 5,
+        "date": "2025-07-21",
+        "presents": []
+      },
+      {
+        "numberClass": 6,
+        "date": "2025-07-28",
+        "presents": []
+      },
+      {
+        "numberClass": 7,
+        "date": "2025-08-04",
+        "presents": []
+      },
+      {
+        "numberClass": 8,
+        "date": "2025-08-11",
+        "presents": []
+      },
+      {
+        "numberClass": 9,
+        "date": "2025-08-18",
+        "presents": []
+      },
+      {
+        "numberClass": 10,
+        "date": "2025-08-25",
+        "presents": []
+      },
+      {
+        "numberClass": 11,
+        "date": "2025-09-01",
+        "presents": []
+      },
+      {
+        "numberClass": 12,
+        "date": "2025-09-08",
+        "presents": []
+      },
+      {
+        "numberClass": 13,
+        "date": "2025-09-15",
+        "presents": []
+      },
+      {
+        "numberClass": 14,
+        "date": "2025-09-22",
+        "presents": []
+      },
+      {
+        "numberClass": 15,
+        "date": "2025-09-29",
+        "presents": []
+      },
+      {
+        "numberClass": 16,
+        "date": "2025-10-06",
+        "presents": []
+      },
+      {
+        "numberClass": 17,
+        "date": "2025-10-13",
+        "presents": []
+      },
+      {
+        "numberClass": 18,
+        "date": "2025-10-20",
+        "presents": []
+      },
+      {
+        "numberClass": 19,
+        "date": "2025-10-27",
+        "presents": []
+      },
+      {
+        "numberClass": 20,
+        "date": "2025-11-03",
+        "presents": []
+      },
+      {
+        "numberClass": 21,
+        "date": "2025-11-10",
+        "presents": []
+      },
+      {
+        "numberClass": 22,
+        "date": "2025-11-17",
+        "presents": []
+      },
+      {
+        "numberClass": 23,
+        "date": "2025-11-24",
+        "presents": []
+      },
+      {
+        "numberClass": 24,
+        "date": "2025-12-01",
+        "presents": []
+      },
+      {
+        "numberClass": 25,
+        "date": "2025-12-08",
+        "presents": []
+      },
+      {
+        "numberClass": 26,
+        "date": "2025-12-15",
+        "presents": []
+      },
+      {
+        "numberClass": 27,
+        "date": "2025-12-22",
+        "presents": []
+      },
+      {
+        "numberClass": 28,
+        "date": "2025-12-29",
+        "presents": []
+      },
+      {
+        "numberClass": 29,
+        "date": "2026-01-05",
+        "presents": []
+      },
+      {
+        "numberClass": 30,
+        "date": "2026-01-12",
+        "presents": []
+      }
+    ]
   }
 ]

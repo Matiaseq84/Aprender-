@@ -1,9 +1,9 @@
 import { readData, writeData } from "../utils/functions.js";
-import { getAllStudents, getStudentByDni } from "./studentController.js";
+
 import { addAttendanceEntry } from "./attendanceController.js";
 import { getAllTeachers } from "./teacherController.js";
-import  Course from "../models/Course.js"
-import { constructFromSymbol } from "date-fns/constants";
+import Course from "../models/Course.js"
+import Student from "../models/Student.js"
 import Teacher from "../models/Teacher.js";
 const DB_FILE = './models/courses.json'
 
@@ -19,17 +19,6 @@ export async function getAllCourses() {
     console.error('Error al traer los cursos')
     throw error
   }
-}
-
-export async function getCourseById(id) {
-  try {
-    const courses = await getAllCourses()
-    return courses.find(c => c._id === parseInt(id))  
-  } catch(error) {
-    console.error('Error al traer los cursos')
-    throw error
-  }
-    
 }
 
 export async function getFilteredCourses(req, res) {
@@ -65,12 +54,13 @@ export async function getFilteredCourses(req, res) {
 
 export async function registerCourse(req, res) {
     try {
+        const teachers = await getAllTeachers();
+
         const { courseName, coursePrice, courseCapacity, hours, days, teacher, status }  = req.body
 
     let schedule = []
 
     if (!courseName || !coursePrice || !courseCapacity || !teacher || !status || !days?.length || !hours?.length) {
-        const teachers = await getAllTeachers();
         return res.render('register-course', {
             teachers,
             error: 'Todos los campos son obligatorios.'
@@ -78,8 +68,11 @@ export async function registerCourse(req, res) {
     }
 
     const exists = await Course.findOne({courseName})
+    
     if (exists) {
-      return res.status(400).render('register-courses', {
+      console.log('aquí')
+      return res.status(400).render('register-course', {
+        teachers,
         error: 'Ya existe un curso con ese nombre',
         FormData: req.body
       })
@@ -106,52 +99,52 @@ export async function registerCourse(req, res) {
 
     await newCourse.save()    
     
-    const teachers = await getAllTeachers()
-
     res.render('register-course', {
-            teachers,
-            success: 'Curso registrado exitosamente.',
+        teachers,
+        success: 'Curso registrado exitosamente.',
             
-        });
+    });
     
     } catch(error) {
         console.error('Error', error)
-        try {
-      const teachers = await getAllTeachers();
-      res.status(500).render('register-course', {
-        teachers,
-        error: 'Error en el servidor al registrar el curso.'
-      });
-    } catch (e) {
-      res.status(500).send('Error fatal del servidor');
-    }
-
-    }
-    
+      try {
+        const teachers = await getAllTeachers();
+        res.status(500).render('register-course', {
+          teachers,
+          error: 'Error en el servidor al registrar el curso.'
+        });
+      } catch (e) {
+        res.status(500).send('Error fatal del servidor');
+      }
+    }    
 }
 
 export async function updateCourseData(req, res) {
-  const { id } = req.params;
-  const newData = req.body;
+  try {
+    const { id } = req.params;
+    const newData = req.body;
 
-
-  const updatedCourse = await Course.findByIdAndUpdate(id, newData, { new: true });
+    const updatedCourse = await Course.findByIdAndUpdate(id, newData, { new: true });
  
-  if (!updatedCourse) {
-    return res.status(404).send("Curso no encontrado");
+    if (!updatedCourse) {
+      return res.status(404).send("Curso no encontrado");
   }
 
-  res.redirect('/admin/buscar');
+    res.redirect('/admin/buscar');
+  } catch (error) {
+    console.error('Error al actualizar el curso', error)
+    res.status(500).send('Error al actualizar el curso')
+  }
+  
 }
 
 export async function deleteCourseData(req, res) {
   try {
     const { id } = req.params;
 
-  
-  await Course.findByIdAndDelete(id)
+    await Course.findByIdAndDelete(id)
 
-  res.redirect('/admin/buscar');
+    res.redirect('/admin/buscar');
   } catch (error) {
     console.error('Error eliminando el curso: ', error)
     res.status(500).send('Error al eliminar el curso')
@@ -159,100 +152,98 @@ export async function deleteCourseData(req, res) {
   
 }
 
-export async function getCourseByDni(dni) {
+export async function enrollStudent(req, res) {
   
-  const courses = await getAllCourses(DB_FILE)
-  
-  const course = courses.find( course => course.dni === dni)
+  try {
+    const courses = await getAllCourses()
+    const { dni, courseName } = req.query
 
-  return course
+    if (!dni) {
+      return res.render('enroll-student', {
+        courses,
+        student: null,
+        error: null,
+        success: null
+      });
+    }
 
+    const student = await Student.findOne({dni});
+
+    if (!student) {
+      return res.render('enroll-student', {
+        courses,
+        student: null,
+        error: 'Alumno no encontrado',
+        success: null
+      })
+    }
+
+    const selectedCourse = await Course.findById(courseName);
+    
+    return res.render('enroll-student', {
+      courses,
+      student,
+      selectedCourse,
+      error: null,
+      success: null
+    })
+  } catch (error) {
+    console.error('Error buscando al alumno: ', error)
+    res.status(500).send('Error buscando al alumno')
+  }  
 }
 
-export async function enrollStudent(req, res) {
-  const courses = await getAllCourses(); 
-  const { dni, courseName } = req.query;
-
-  if (!dni) {
+export async function registerEnrollment(req, res) {
+  try {
+    const { studentId, courseId } = req.body
     
+    const courses = await getAllCourses()
+
+    const course = await Course.findById(courseId)
+    
+    //Validaciones
+    if(!course) {
+      return res.render('enroll-student', {
+        courses,
+        student: null,
+        error: 'Curso no encontrado',
+        success: null
+      })
+    }
+
+    const alreadyEnrolled = course.enrolledStudents.some( s => s.idStudent.toString() === studentId)
+
+    if(alreadyEnrolled) {
+      return res.render('enroll-student', {
+        courses,
+        student: null,
+        error: 'El alumno ya está inscripto en este curso.',
+        success: null
+      })
+    }
+
+    if(course.enrolledStudents.length >= parseInt(course.courseCapacity)) {
+      return res.render('enroll-student', {
+        courses,
+        student: null,
+        error: 'No hay más cupos disponibles en este curso',
+        success: null
+      })
+    }
+
+    //Inscribir
+    course.enrolledStudents.push({idStudent: studentId})
+    await course.save()
+
     return res.render('enroll-student', {
       courses,
       student: null,
       error: null,
-      success: null
-    });
-  }
-
-  const student = await getStudentByDni(dni);
-
-  if (!student) {
-    return res.render('enroll-student', {
-      courses,
-      student: null,
-      error: 'Alumno no encontrado',
-      success: null
-    });
-  }
-
-  const selectedCourse = courses.find(c => c.name === courseName);
-
-  return res.render('enroll-student', {
-    courses,
-    student,
-    selectedCourse,
-    error: null,
-    success: null
-  });
-}
-
-export async function registerEnrollment(req, res) {
-  const { studentId, courseId } = req.body
-  console.log(courseId, studentId)
-
-  const courses = await getAllCourses()
-  const course = courses.find(c => c.id === parseInt(courseId))
-  
-  //Validaciones
-  if(!course) {
-    return res.render('enroll-student', {
-      courses,
-      student: null,
-      error: 'Curso no encontrado',
-      success: null
+      success: 'Inscripción realizada con éxito.'
     })
+  } catch (error) {
+    console.error('Error en la inscripción.', error)
+    res.status(500).send('Error en el servidor al procesar la inscripción.')
   }
-
-  //const course = courses[courseIndex]
-
-  if(course.enrolledStudents.includes(studentId)) {
-    return res.render('enroll-student', {
-      courses,
-      student: null,
-      error: 'El alumno ya está inscripto en este curso.',
-      success: null
-    })
-  }
-
-  if(course.enrolledStudents.length >= parseInt(course.capacity)) {
-    return res.render('enroll-student', {
-      courses,
-      student: null,
-      error: 'No hay más cupos disponibles en este curso',
-      success: null
-    })
-  }
-
-  //Inscribir
-  course.enrolledStudents.push({idStudent: parseInt(studentId)})
-  await writeData(DB_FILE, courses)
-
-  return res.render('enroll-student', {
-    courses,
-    student: null,
-    error: null,
-    success: 'Inscripción realizada con éxito.'
-  })
-
-
 }
 
