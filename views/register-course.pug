@@ -4,15 +4,7 @@ block content
     h2 Registrar curso
     form(action="/admin/register-course" method="POST")
         label(for="courseName") Nombre del curso: 
-        select(name="courseName")
-            option(value="Informatica") Informática
-            option(value="Disenio") Diseño Gráfico y Multimedial
-            option(value="Administracion") Administración de Empresas
-            option(value="Marketing") Marketing Digital y Redes Sociales
-            option(value="Produccion") Producción Audiovisual
-            option(value="Gestion") Gestión Contable y Tributaria
-
-        br
+        input(type="text" name="courseName" required)
 
         label(for="coursePrice") Precio:
         input(type="number" name="coursePrice" required)

@@ -1,5 +1,10 @@
 import { readData, writeData } from "../utils/functions.js";
 import { getAllStudents, getStudentByDni } from "./studentController.js";
+import { addAttendanceEntry } from "./attendanceController.js";
+import { getAllTeachers } from "./teacherController.js";
+import  Course from "../models/Course.js"
+import { constructFromSymbol } from "date-fns/constants";
+import Teacher from "../models/Teacher.js";
 const DB_FILE = './models/courses.json'
 
 //Función para normalizar texto (quita tildes y pone en minúscula)
@@ -8,81 +13,150 @@ const normalize = str =>
 
 export async function getAllCourses() {
   try {
-    const data = await readData(DB_FILE)
-    return data
+    const courses = await Course.find({})
+    return courses
   } catch(error) {
-    console.error('Error al leer el archivo')
+    console.error('Error al traer los cursos')
     throw error
   }
 }
 
-export async function addCourse(data) {
+export async function getCourseById(id) {
   try {
     const courses = await getAllCourses()
-
-    courses.push(data)
-
-    await writeData(DB_FILE, courses)
+    return courses.find(c => c._id === parseInt(id))  
   } catch(error) {
-    console.error('Error al guardar el curso:', error);
-    throw error;
+    console.error('Error al traer los cursos')
+    throw error
   }
     
 }
 
-export async function getCourseById(id) {
-    const courses = await getAllCourses()
-    return courses.find(c => c.id === parseInt(id))
-}
-
-export async function updateCourse(id, newData) {
-    const courses = await getAllCourses()
-    const index = courses.findIndex(c => c.id === parseInt(id))
-    if (index === -1) return null
-
-    courses[index] = { ...courses[index], ...newData }
-    await writeData(DB_FILE, courses)
-    return courses[index]
-}
-
-export async function deleteCourse(id) {
-    let courses = await getAllCourses()
-    courses = courses.filter(c => c.id !== parseInt(id))
-    await writeData(DB_FILE, courses)
-}
-
 export async function getFilteredCourses(req, res) {
-  const { name, teacher, status } = req.query;
-  let courses = await getAllCourses();
+  try {
+    const { name, teacher, status } = req.query
 
-  let curso = courses.find(c => {
-    const matchName = name ? normalize(c.name).includes(normalize(name)) : true;
-    const matchTeacher = teacher ? normalize(c.teacher).includes(normalize(teacher)) : true;
-    const matchStatus = status ? c.status === status : true;
-    return matchName && matchTeacher && matchStatus;
-  });
+    const filter = {}
 
-  //ACA NO FUNCIONABA LA RUTA ES SIN / Y SIN /admin
-  res.render('buscar', { cursoEncontrado: curso });
-  //res.render('/admin/buscar', { cursoEncontrado: curso });
-  //res.render('/buscar', { cursoEncontrado: curso });
+    if (name) filter.courseName = { $regex: name, $options: 'i'}
+    if (teacher) filter.nameTeacher = { $regex: teacher, $options: 'i'}
+    if (status) filter.status = status
+
+    const courses = await Course.find(filter)
+    const teachers = await getAllTeachers()
+
+    let foundCourse = null
+    if (courses.length > 0) foundCourse = courses[0]
+
+    const nameTeacher = await Teacher.findById(foundCourse.teacher).select('name')
+  
+    res.render('buscar', {
+      foundCourse,
+      teachers,
+      nameTeacher
+    })
+
+  } catch (error) {
+    console.error('Error al filtrar los cursos: ', error)
+    res.status(500).send('Error al buscar cursos')
+  }
+    
+}
+
+export async function registerCourse(req, res) {
+    try {
+        const { courseName, coursePrice, courseCapacity, hours, days, teacher, status }  = req.body
+
+    let schedule = []
+
+    if (!courseName || !coursePrice || !courseCapacity || !teacher || !status || !days?.length || !hours?.length) {
+        const teachers = await getAllTeachers();
+        return res.render('register-course', {
+            teachers,
+            error: 'Todos los campos son obligatorios.'
+        });
+    }
+
+    const exists = await Course.findOne({courseName})
+    if (exists) {
+      return res.status(400).render('register-courses', {
+        error: 'Ya existe un curso con ese nombre',
+        FormData: req.body
+      })
+    }
+    
+    for (let i = 0 ; i < days.length; i++) {
+        schedule.push({
+            day: days[i],
+            hour: hours[i]
+        })      
+    }
+
+    const newCourse = new Course({
+      courseName,
+        coursePrice,
+        courseCapacity,
+        schedule,
+        teacher,
+        status,
+    })
+
+    
+    await addAttendanceEntry(newCourse.id, days)
+
+    await newCourse.save()    
+    
+    const teachers = await getAllTeachers()
+
+    res.render('register-course', {
+            teachers,
+            success: 'Curso registrado exitosamente.',
+            
+        });
+    
+    } catch(error) {
+        console.error('Error', error)
+        try {
+      const teachers = await getAllTeachers();
+      res.status(500).render('register-course', {
+        teachers,
+        error: 'Error en el servidor al registrar el curso.'
+      });
+    } catch (e) {
+      res.status(500).send('Error fatal del servidor');
+    }
+
+    }
+    
 }
 
 export async function updateCourseData(req, res) {
   const { id } = req.params;
   const newData = req.body;
 
-  const courses = await getAllCourses();
-  const index = courses.findIndex(c => c.id === parseInt(id));
 
-  if (index === -1) {
+  const updatedCourse = await Course.findByIdAndUpdate(id, newData, { new: true });
+ 
+  if (!updatedCourse) {
     return res.status(404).send("Curso no encontrado");
   }
 
-  courses[index] = { ...courses[index], ...newData };
-  await writeData('./models/courses.json', courses);
+  res.redirect('/admin/buscar');
+}
+
+export async function deleteCourseData(req, res) {
+  try {
+    const { id } = req.params;
+
+  
+  await Course.findByIdAndDelete(id)
 
   res.redirect('/admin/buscar');
+  } catch (error) {
+    console.error('Error eliminando el curso: ', error)
+    res.status(500).send('Error al eliminar el curso')
+  }
+  
 }
 
 export async function getCourseByDni(dni) {
@@ -93,16 +167,6 @@ export async function getCourseByDni(dni) {
 
   return course
 
-}
-
-export async function deleteCourseData(req, res) {
-  let courses = await getAllCourses();
-  const { id } = req.params;
-
-  courses = courses.filter(c => c.id !== parseInt(id));
-  await writeData('./models/courses.json', courses);
-
-  res.redirect('/admin/buscar');
 }
 
 export async function enrollStudent(req, res) {
@@ -191,3 +255,4 @@ export async function registerEnrollment(req, res) {
 
 
 }
+

@@ -1,5 +1,5 @@
 import { readData, writeData } from '../utils/functions.js';
-import Student from '../models/students.js';
+import Student from '../models/Student.js';
 
 const DB_FILE = './models/students.json';
 
@@ -34,9 +34,9 @@ export async function registerStudent(req, res) {
         
         const exists = await Student.findOne({ $or: [{ dni }, { email }] })
         if(exists) {
-          return res.status(400).render('register-stduents', {
+          return res.status(400).render('register-students', {
             error: 'Ya existe un estudiante con ese DNI o .',
-            formData: newStudentData
+            formData: req.body
           })
         }
 

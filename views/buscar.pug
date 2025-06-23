@@ -55,29 +55,32 @@ block content
       button(type="submit" class="btn btn-danger") Eliminar
 
   // Resultado de búsqueda de curso
-  if typeof cursoEncontrado !== 'undefined' && cursoEncontrado
+  if typeof foundCourse !== 'undefined' && foundCourse
     hr
     h3 Resultado de la búsqueda de curso
 
-    form(action=`/courses/update/${cursoEncontrado.id}` method="POST" class="form-edicion")
+    form(action=`/courses/update/${foundCourse._id}` method="POST" class="form-edicion")
       label Nombre del curso:
-      input(type="text" name="name" value=cursoEncontrado.name class="input-text")
+      input(type="text" name="name" value=foundCourse.courseName class="input-text")
 
-      label Docente:
-      input(type="text" name="teacher" value=cursoEncontrado.teacher class="input-text")
-
+      label(for="teacher") Docente
+        select(name="teacher" required)
+            option(value="") #{nameTeacher.name}
+            each teacher in teachers
+                option(value=teacher._id) #{teacher.name}
+        br
       label Precio:
-      input(type="number" name="price" value=cursoEncontrado.price class="input-text")
+      input(type="number" name="price" value=foundCourse.coursePrice class="input-text")
 
       label Cupo:
-      input(type="number" name="capacity" value=cursoEncontrado.capacity class="input-text")
+      input(type="number" name="capacity" value=foundCourse.courseCapacity class="input-text")
 
       label Estado:
       select(name="status" class="input-text")
-        option(value="Activo" selected=cursoEncontrado.status === 'Activo') Activo
-        option(value="Inactivo" selected=cursoEncontrado.status === 'Inactivo') Inactivo
+        option(value="Activo" selected=foundCourse.status === 'Activo') Activo
+        option(value="Inactivo" selected=foundCourse.status === 'Inactivo') Inactivo
 
       button(type="submit" class="btn") Modificar
 
-    form(action=`/courses/delete/${cursoEncontrado.id}` method="POST" class="form-edicion" onsubmit="return confirm('¿Eliminar este curso?')")
+    form(action=`/courses/delete/${foundCourse.id}` method="POST" class="form-edicion" onsubmit="return confirm('¿Eliminar este curso?')")
       button(type="submit" class="btn btn-danger") Eliminar

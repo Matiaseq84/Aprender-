@@ -1,5 +1,5 @@
 import express from 'express'
-import { registerCourse } from '../controllers/adminController.js'
+import { registerCourse } from '../controllers/courseController.js'
 import { getAllTeachers } from '../controllers/teacherController.js'
 import { registerStudent } from '../controllers/studentController.js';
 import { getAllCourses, enrollStudent, registerEnrollment } from '../controllers/courseController.js';

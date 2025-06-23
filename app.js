@@ -4,9 +4,12 @@ import adminRouter from './routes/adminRoutes.js'
 import courseRoutes from './routes/coursesRoutes.js';
 import studentRoutes from './routes/studentsRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
+import * as Teachers from './controllers/teacherController.js'
 import connectDB from './db.js';
 
-connectDB()
+connectDB().then(async () => {
+    await Teachers.initializeTeachers()
+})
 const app = express();
 const PORT = process.env.PORT || 3000;
 
