@@ -9,7 +9,7 @@ block content
     select(name="courseId", id="courseId", required)
       option(value="") Seleccionar curso
       each course in courses
-        option(value=course.id selected=course.id==selectedCourseId) #{course.name}
+        option(value=course._id selected=course._id==selectedCourseId) #{course.courseName}
 
     label(for="classNumber") Clase:
     select(name="classNumber", id="classNumber", required)
@@ -19,7 +19,7 @@ block content
 
     button(type="submit") Buscar clase
 
-  // Si están seleccionados ambos, mostrar asistencia
+  // FORM POST: registrar asistencia
   if selectedCourseId && classNumber
     form(method="POST", action="/admin/take-attendance")
       input(type="hidden", name="courseId", value=selectedCourseId)
@@ -35,9 +35,10 @@ block content
             each student in students
               tr
                 td #{student.studentName} #{student.studentLastname}
-                td: input(type="checkbox", name="presents[]", value=student._id)
+                td: input(type="checkbox", name="presents[]" value=student._id)
         button(type="submit") Guardar Asistencia
       else
         p No hay estudiantes inscriptos.
+
   if success
-        p(style="color:green") #{success}
+    p(style="color:green") #{success}
