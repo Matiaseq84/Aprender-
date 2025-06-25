@@ -1,143 +1,203 @@
-import { readData, writeData } from '../utils/functions.js';
 import Student from '../models/Student.js';
+import mongoose from 'mongoose';
 
-const DB_FILE = './models/students.json';
 
-//Función para normalizar texto (sin tildes y en minúscula)
 const normalize = str =>
-  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  str ? str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() : '';
 
-//Función para registrar un nuevo alumno
-export async function registerStudent(req, res) { 
-    try {
-  
+function isValidEmail(email) {
+  return /\S+@\S+\.\S+/.test(email);
+}
 
-        // Obtener datos del formulario.
-       
-        const {
-            studentName,      
-            studentLastname,  
-            dni,              
-            email,     
-            tel      
-        } = req.body;
-
-        // Mapeo de nombres de formulario a nombres de JSON
-        
-        // Validaciones
-        if (!studentName || !studentLastname || !dni || !email || !tel) {
-          return res.status(400).render('register-students', {
-            error: 'Todos los campos son obligatorios.',
-            formData: req.body// Para rellenar el formulario con los datos previos
-          });
-        }
-        
-        const exists = await Student.findOne({ $or: [{ dni }, { email }] })
-        if(exists) {
-          return res.status(400).render('register-students', {
-            error: 'Ya existe un estudiante con ese DNI o .',
-            formData: req.body
-          })
-        }
-
-        
-        const newStudentData = new Student({
-            studentName,
-            studentLastname, 
-            dni: dni.toString(), // Asegurar que DNI sea string
-            email, 
-            tel: tel.toString() // Asegurar que tel sea string
-        });
-
-       
-
-        await newStudentData.save()
-
-        // Para pasar los datos del formulario de vuelta y limpiarlos si es necesario
-        res.render('register-students', {
-            success: 'Estudiante registrado exitosamente.',
-            formData: {} // Limpiar el formulario
-        });
-
-    } catch (error) {
-        console.error("Error registrando estudiante:", error);
-        res.status(500).render('register-students', {
-            error: 'Error interno del servidor al registrar el estudiante.',
-            formData: req.body // Devolver los datos ingresados
-        });
-    }
+function isValidDni(dni) {
+  return /^\d{7,10}$/.test(dni);
 }
 
 
-//Función para buscar un alumno por nombre o dni y renderizar la vista con el resultado
+function isValidPhone(tel) {
+  return /^\d{7,}$/.test(tel);
+}
 
-export async function getFilteredStudents(req, res) {
-  const { name, dni } = req.query;
-  const students = await readData(DB_FILE);
+// Registrar un nuevo alumno
+export async function registerStudent(req, res) {
+  try {
+    let { studentName, studentLastname, dni, email, tel } = req.body;
 
-  let alumno = null;
+    studentName = normalize(studentName);
+    studentLastname = normalize(studentLastname);
+    dni = dni?.toString();
+    tel = tel?.toString();
+    email = email?.toLowerCase();
 
-  if (dni) {
-    alumno = students.find(s => s.dni.toString() === dni);
-  } else if (name) {
-    alumno = students.find(s => {
-      const fullName = `${s.studentName} ${s.studentLastname}`.toLowerCase();
-      return fullName.includes(name.toLowerCase());
+    if (!studentName || !studentLastname || !dni || !email || !tel) {
+      return res.status(400).render('register-students', {
+        error: 'Todos los campos son obligatorios.',
+        formData: req.body
+      });
+    }
+
+    if (!isValidEmail(email)) {
+      return res.status(400).render('register-students', {
+        error: 'Email inválido.',
+        formData: req.body
+      });
+    }
+
+    if (!isValidDni(dni)) {
+      return res.status(400).render('register-students', {
+        error: 'DNI inválido. Debe contener sólo números y tener entre 7 y 10 dígitos.',
+        formData: req.body
+      });
+    }
+
+    if (!isValidPhone(tel)) {
+      return res.status(400).render('register-students', {
+        error: 'Teléfono inválido. Debe contener sólo números y al menos 7 dígitos.',
+        formData: req.body
+      });
+    }
+
+    const exists = await Student.findOne({ $or: [{ dni }, { email }] });
+    if (exists) {
+      return res.status(400).render('register-students', {
+        error: 'Ya existe un estudiante con ese DNI o email.',
+        formData: req.body
+      });
+    }
+
+    const newStudentData = new Student({
+      studentName,
+      studentLastname,
+      dni,
+      email,
+      tel
+    });
+
+    await newStudentData.save();
+
+    console.log(`Estudiante registrado: ${studentName} ${studentLastname} - DNI: ${dni}`);
+
+    return res.render('register-students', {
+      success: 'Estudiante registrado exitosamente.',
+      formData: {}
+    });
+
+  } catch (error) {
+    console.error("Error registrando estudiante:", error);
+    return res.status(500).render('register-students', {
+      error: 'Error interno del servidor al registrar el estudiante.',
+      formData: req.body
     });
   }
+}
 
-  res.render('buscar', { alumnoEncontrado: alumno });
+export async function getFilteredStudents(req, res) {
+  try {
+    const { name, dni } = req.query;
+    let alumno = null;
+
+    if (dni) {
+      alumno = await Student.findOne({ dni: dni.toString() });
+    } else if (name) {
+      const normalized = normalize(name);
+      alumno = await Student.findOne({
+        $or: [
+          { studentName: { $regex: normalized, $options: 'i' } },
+          { studentLastname: { $regex: normalized, $options: 'i' } }
+        ]
+      });
+    }
+
+    return res.render('buscar', { alumnoEncontrado: alumno });
+  } catch (error) {
+    console.error('Error buscando estudiante:', error);
+    return res.status(500).send('Error en el servidor');
+  }
 }
 
 export async function updateStudent(req, res) {
-  const { id } = req.params;
-  const newData = req.body;
+  try {
+    console.log("req.params:", req.params);
+    console.log("req.body:", req.body);
 
-  const students = await readData(DB_FILE);
-  const index = students.findIndex(s => s._id === parseInt(id));
+    const { id } = req.params;
+    let newData = req.body;
 
-  if (index === -1) {
-    return res.status(404).send("Alumno no encontrado");
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send("ID inválido.");
+    }
+
+    if (newData.studentName) newData.studentName = normalize(newData.studentName);
+    if (newData.studentLastname) newData.studentLastname = normalize(newData.studentLastname);
+    if (newData.email) newData.email = newData.email.toLowerCase();
+    if (newData.dni) newData.dni = newData.dni.toString();
+    if (newData.tel) newData.tel = newData.tel.toString();
+
+    if (newData.email && !isValidEmail(newData.email)) {
+      return res.status(400).send("Email inválido.");
+    }
+    if (newData.dni && !isValidDni(newData.dni)) {
+      return res.status(400).send("DNI inválido.");
+    }
+    if (newData.tel && !isValidPhone(newData.tel)) {
+      return res.status(400).send("Teléfono inválido.");
+    }
+
+    if (newData.dni || newData.email) {
+      const orConditions = [];
+      if (newData.dni) orConditions.push({ dni: newData.dni });
+      if (newData.email) orConditions.push({ email: newData.email });
+
+      const exists = await Student.findOne({
+        _id: { $ne: id },
+        $or: orConditions
+      });
+
+      if (exists) {
+        return res.status(400).send("DNI o email ya en uso por otro estudiante.");
+      }
+    }
+
+    const updated = await Student.findByIdAndUpdate(id, newData, { new: true });
+
+    if (!updated) {
+      return res.status(404).send("Alumno no encontrado");
+    }
+
+    console.log(`Estudiante actualizado: ${updated.studentName} ${updated.studentLastname} - ID: ${id}`);
+    return res.redirect('/admin/buscar');
+
+  } catch (error) {
+    console.error('Error actualizando estudiante:', error);
+    return res.status(500).send("Error en el servidor");
   }
-
-  students[index] = { ...students[index], ...newData };
-  await writeData(DB_FILE, students);
-
-  res.redirect('/admin/buscar');
 }
 
 export async function deleteStudent(req, res) {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  let students = await readData(DB_FILE);
-  students = students.filter(s => s._id !== parseInt(id));
+    const deleted = await Student.findByIdAndDelete(id);
 
-  await writeData(DB_FILE, students);
-  res.redirect('/admin/buscar');
+    if(!deleted) {
+      return res.status(404).send("Alumno no encontrado");
+    }
+
+    console.log(`Estudiante eliminado - ID: ${id}`);
+
+    return res.redirect('/admin/buscar');
+  } catch (error) {
+    console.error('Error eliminando estudiante:', error);
+    return res.status(500).send("Error en el servidor");
+  }
 }
 
 export async function getAllStudents(req, res) {
-  const data = await readData(DB_FILE)
-  return data
-}
-
-export async function getStudentByDni(dni) {
-  
-  const students = await getAllStudents(DB_FILE)
-  
-  const student = students.find( student => student.dni === dni)
-
-  return student
-
-}
-
-export async function getStudentById(id) {
-  
-  console.log('desde aquí', id)
-  const students = await getAllStudents(DB_FILE)
-  
-  const student = students.find( student => student._id === id)
-
-  return student
-
+  try {
+    const students = await Student.find({});
+    return students;
+  } catch (error) {
+    console.error('Error obteniendo estudiantes:', error);
+    return [];
+  }
 }

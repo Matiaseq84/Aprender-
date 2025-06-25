@@ -1,64 +1,61 @@
+import Course from '../models/Course.js';
 
-import { readData } from '../utils/functions.js';
-
-const COURSES_DB = './models/courses.json';
-const ENROLLMENTS_DB = './models/enrollments.json';
-const STUDENTS_DB = './models/students.json';
-
-//Función auxiliar: normaliza texto para evitar errores por tildes o mayúsculas
-const normalize = str =>
-  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-
-//Reporte: Alumnos por curso
 export async function getAlumnosPorCurso(req, res) {
-  const courses = await readData(COURSES_DB);
-  const students = await readData(STUDENTS_DB);
+  try {
+    const courses = await Course.find({})
+      .populate('enrolledStudents.idStudent');
 
-  const coursesWithStudents = courses
-    .map(course => {
-      const enrolledStudents = course.enrolledStudents
-        .map(e => students.find(s => s._id === e.idStudent)) 
+    const coursesWithStudents = courses.map(course => ({
+      name: course.courseName,
+      students: course.enrolledStudents.map(e => e.idStudent)
+    }));
 
-    return{
-      name: course.name,
-      students: enrolledStudents
-    } 
-  })
-
-  res.render('report-alumnos-por-curso', { coursesWithStudents });
+    res.render('report-alumnos-por-curso', { coursesWithStudents });
+  } catch (error) {
+    console.error('Error generando reporte de alumnos por curso:', error);
+    res.status(500).send('Error en el servidor');
+  }
 }
 
-//Reporte: Cupos disponibles por curso (solo cursos activos)
 export async function getCuposDisponibles(req, res) {
-    const courses = await readData(COURSES_DB);
+  try {
+    const courses = await Course.find({ status: 'Activo' });
 
-    const availableCourses = courses
-      .filter(course => course.status === 'on')
-      .map(course => {
-        const taken = course.enrolledStudents.length
-        const availability = parseInt(course.capacity) - taken
+    const availableCourses = courses.map(course => {
+      const taken = course.enrolledStudents.length;
+      const availability = course.courseCapacity - taken;
 
-        return {
-        name: course.name,
-        capacity: course.capacity,
+      return {
+        name: course.courseName,
+        capacity: course.courseCapacity,
         taken,
         availability
-      }
-      })
-    
-  res.render('report-cupos-disponibles', { availableCourses });
+      };
+    });
+
+    res.render('report-cupos-disponibles', { availableCourses });
+  } catch (error) {
+    console.error('Error generando reporte de cupos:', error);
+    res.status(500).send('Error en el servidor');
+  }
 }
 
-//Reporte: Cursos completos (cantidad de inscriptos igual o mayor al cupo)
 export async function getCursosCompletos(req, res) {
-    const courses = await readData(COURSES_DB)
+  try {
+    const courses = await Course.find({});
 
-    const full =  courses
-      .filter( course => course.enrolledStudents.length === parseInt(course.capacity))
-      .map( course => ({
-            ...course,
-            enrolled: course.enrolledStudents.length
-      }))
-  
-  res.render('report-cursos-completos', { full });
+    const full = courses
+      .filter(course => course.enrolledStudents.length >= course.courseCapacity)
+      .map(course => ({
+        name: course.courseName,
+        enrolled: course.enrolledStudents.length,
+        capacity: course.courseCapacity
+      }));
+
+    res.render('report-cursos-completos', { full });
+  } catch (error) {
+    console.error('Error generando reporte de cursos completos:', error);
+    res.status(500).send('Error en el servidor');
+  }
 }
+
