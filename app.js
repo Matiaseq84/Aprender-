@@ -28,6 +28,12 @@ app.use(express.static('public'));
 app.set('view engine', 'pug');
 app.set('views', './views');
 
+// 🧑‍💻 Middleware para pasar el usuario a todas las vistas Pug
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+});
+
 // 🔌 Conectar base de datos e inicializar admin/teachers
 connectDB().then(async () => {
   await Teachers.initializeTeachers();
