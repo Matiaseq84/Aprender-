@@ -1,16 +1,27 @@
 extends admin-panel-layout
 
 block content
-  h2 Alumnos por curso
+  h2(style="margin-bottom: 2rem") Alumnos por curso
 
   if coursesWithStudents.length
     each curso in coursesWithStudents 
-      h3= curso.name
-      if curso.students.length
-        ul
-          each alumno in curso.students
-            li #{alumno.studentName} #{alumno.studentLastname} - #{alumno.email}
-      else
-        p No hay alumnos inscriptos en este curso.
+      .course-block
+        h3 #{curso.name}
+
+        if curso.students.length
+          table.table.table-bordered.table-striped
+            thead
+              tr
+                th Nombre
+                th Apellido
+                th Email
+            tbody
+              each alumno in curso.students
+                tr
+                  td= alumno.studentName
+                  td= alumno.studentLastname
+                  td= alumno.email
+        else
+          .alert.alert-warning No hay alumnos inscriptos en este curso.
   else
-    p No hay cursos disponibles.
+    .alert.alert-info No hay cursos disponibles.

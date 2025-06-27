@@ -1,16 +1,109 @@
-doctype html 
-html 
+doctype html
+html
   head 
     title Panel Administrador
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="/css/styles.css")
-        
+    style.
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f1f1f1;
+      }
+
+      header {
+        background-color: #007bff;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 2rem;
+      }
+
+      .logo-container img {
+        height: 40px;
+      }
+
+      .header-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        text-align: right;
+      }
+
+      .user-info {
+        font-size: 0.9rem;
+      }
+
+      .user-info a {
+        color: #fff;
+        margin-left: 0.5rem;
+        text-decoration: underline;
+      }
+
+      .container {
+        display: flex;
+        height: calc(100vh - 80px);
+      }
+
+      .sidebar {
+        width: 220px;
+        background-color: #343a40;
+        padding: 1rem;
+        color: white;
+      }
+
+      .sidebar ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar li {
+        margin-bottom: 1rem;
+      }
+
+      .sidebar a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .sidebar a:hover {
+        text-decoration: underline;
+      }
+
+      .submenu {
+        margin-top: 0.5rem;
+        padding-left: 1rem;
+      }
+
+      .submenu.hidden {
+        display: none;
+      }
+
+      main.content {
+        flex-grow: 1;
+        padding: 2rem;
+        overflow-y: auto;
+        background-color: #fff;
+      }
+
   body 
     header
-      h1 PANEL ADMINISTRATIVO
+      .logo-container
+        img(src="/images/logo_aprender.jpg", alt="Logo Aprender+")
+      
+      .header-content
+        h1 PANEL ADMINISTRATIVO
+        .user-info
+          span Bienvenido, #{user.username}
+          |  |
+          a(href='/login/logout') Cerrar sesión
+
     .container  
       .sidebar    
         nav 
-        
           ul 
             li: a(href="/admin/register-students") REGISTRAR ALUMNO 
             li: a(href="/admin/enroll-student") REGISTRAR INSCRIPCIÓN
@@ -23,16 +116,18 @@ html
                 li: a(href="/reportes/alumnos-por-curso") Alumnos por Curso
                 li: a(href="/reportes/cupos-disponibles") Cupos Disponibles
                 li: a(href="/reportes/cursos-completos") Cursos Completos
+                li: a(href="/reportes/asistencia") Asistencia por Curso
+
       main.content   
         block content
-script.
-  document.addEventListener('DOMContentLoaded', function () {
-    const toggle = document.getElementById('reportes-toggle');
-    const submenu = document.getElementById('reportes-submenu');
 
-    toggle.addEventListener('click', function (e) {
-      e.preventDefault();
-      submenu.classList.toggle('hidden');
-    });
-  });
-
+    script.
+      document.addEventListener('DOMContentLoaded', function () {
+        const toggle = document.getElementById('reportes-toggle');
+        const submenu = document.getElementById('reportes-submenu');
+        submenu.classList.add('hidden');
+        toggle.addEventListener('click', function (e) {
+          e.preventDefault();
+          submenu.classList.toggle('hidden');
+        });
+      });

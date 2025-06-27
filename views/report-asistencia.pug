@@ -1,0 +1,52 @@
+extends admin-panel-layout
+
+block content
+  h2.text-center.mt-3 Reporte de Asistencia por Curso
+
+  p.text-muted.text-center Selecciona un curso para ver el detalle de asistencia de los estudiantes.
+
+  form(method="GET", action="/reportes/asistencia", class="form-edicion")
+    .form-group
+      label(for="courseId") Curso:
+      select.form-control(name="courseId" id="courseId" required)
+        option(value="") -- Seleccionar un curso --
+        each course in allCourses
+          option(
+            value=course.id,
+            selected=(selectedCourse && selectedCourse.id == course.id)
+          ) #{course.courseName}
+
+    button.btn.btn-primary.mt-3(type="submit") Ver Reporte
+
+  hr
+
+  if attendanceReport && selectedCourse
+    h3.mt-4.text-center Reporte de asistencia para el curso: #{attendanceReport.courseId.courseName}
+
+    .table-responsive
+      table.table.table-bordered.table-striped.text-center.mt-4
+        thead.table-dark
+          tr
+            th Estudiante
+            each clase in attendanceReport.classes
+              th
+                strong Clase #{clase.numberClass}
+                br
+                small= clase.date
+
+        tbody
+          each studentEnrollment in selectedCourse.enrolledStudents
+            tr
+              td #{studentEnrollment.idStudent.studentName} #{studentEnrollment.idStudent.studentLastname}
+              each clase in attendanceReport.classes
+                - const isPresent = clase.presents.some(p => p.studentId && p.studentId._id.toString() === studentEnrollment.idStudent._id.toString())
+                td
+                  if isPresent
+                    //span.text-success.fw-bold ✓
+                    span(class="presente") ✓
+                  else
+                    //span.text-danger.fw-bold ✗
+                    span(class="ausente") ✗
+
+  else if selectedCourse && !attendanceReport
+    .alert.alert-warning.mt-4 No se encontraron datos de asistencia para el curso seleccionado.

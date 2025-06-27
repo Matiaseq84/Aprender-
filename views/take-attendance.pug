@@ -1,32 +1,36 @@
 extends admin-panel-layout
 
 block content
-  h1 Registrar Asistencia
+  h1(style="margin-bottom: 1.5rem") Registrar Asistencia
 
-  // FORM GET con curso + clase
-  form(method="GET", action="/admin/take-attendance")
-    label(for="courseId") Curso:
-    select(name="courseId", id="courseId", required)
-      option(value="") Seleccionar curso
-      each course in courses
-        option(value=course.id selected=course.id==selectedCourseId) #{course.name}
+  // 🔍 FORM GET para seleccionar curso y clase
+  form(method="GET", action="/admin/take-attendance", class="form-edicion")
+    .form-group
+      label(for="courseId") Curso:
+      select(name="courseId", id="courseId", required class="input-text")
+        option(value="") Seleccionar curso
+        each course in courses
+          option(value=course._id selected=course._id==selectedCourseId) #{course.courseName}
 
-    label(for="classNumber") Clase:
-    select(name="classNumber", id="classNumber", required)
-      option(value="") Seleccionar clase
-      each i in Array(30).fill().map((_, idx) => idx + 1)
-        option(value=i selected=classNumber==i) Clase #{i}
+    .form-group
+      label(for="classNumber") Clase:
+      select(name="classNumber", id="classNumber", required class="input-text")
+        option(value="") Seleccionar clase
+        each i in Array(30).fill().map((_, idx) => idx + 1)
+          option(value=i selected=classNumber==i) Clase #{i}
 
-    button(type="submit") Buscar clase
+    button(type="submit" class="btn") Buscar clase
 
-  // Si están seleccionados ambos, mostrar asistencia
+  // 📝 FORM POST para guardar asistencia
   if selectedCourseId && classNumber
+    h2(style="margin-top: 2rem") Asistencia - Clase #{classNumber}
+
     form(method="POST", action="/admin/take-attendance")
       input(type="hidden", name="courseId", value=selectedCourseId)
       input(type="hidden", name="classNumber", value=classNumber)
 
       if students.length
-        table
+        table.table.table-bordered.table-striped.text-center(style="margin-top: 1rem")
           thead
             tr
               th Estudiante
@@ -35,9 +39,11 @@ block content
             each student in students
               tr
                 td #{student.studentName} #{student.studentLastname}
-                td: input(type="checkbox", name="presents[]", value=student._id)
-        button(type="submit") Guardar Asistencia
+                td 
+                  input(type="checkbox", name="presents[]" value=student._id)
+        button(type="submit" class="btn") Guardar Asistencia
       else
-        p No hay estudiantes inscriptos.
+        p(style="color: red; margin-top: 1rem") No hay estudiantes inscriptos en este curso.
+
   if success
-        p(style="color:green") #{success}
+    p(style="color: green; margin-top: 1rem") #{success}

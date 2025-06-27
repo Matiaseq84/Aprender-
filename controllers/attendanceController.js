@@ -1,9 +1,8 @@
-import { readData, writeData } from '../utils/functions.js'
-import { getAllCourses } from './courseController.js'
-import { getAllStudents } from './studentController.js'
+import mongoose from 'mongoose'
+import Attendance from '../models/Attendance.js'
+import Course from '../models/Course.js'
+import Student from '../models/Student.js'
 import { format } from 'date-fns'
-
-const ATTENDANCE_FILE = './models/attendances.json'
 
 const DAY_NAME_TO_NUMBER = {
   "Lunes": 1,
@@ -11,42 +10,7 @@ const DAY_NAME_TO_NUMBER = {
   "Miércoles": 3,
   "Jueves": 4,
   "Viernes": 5,
-}
-
-export async function getAllAttendances() {
-  try {
-    const data = await readData(ATTENDANCE_FILE)
-    return data
-  } catch(error) {
-    console.error('Error al leer el archivo')
-    throw error
-  }
-}
-
-
-export async function addAttendanceEntry(courseId, days) {
-  try {
-    const attendanceData = await readData(ATTENDANCE_FILE)
-
-    const classDates = generateNextNDates(days, 30)
-
-    const classes = classDates.map((dateStr, index) => ({
-      numberClass: index + 1,
-      date: dateStr,
-      presents: []
-    }))
-
-    attendanceData.push({
-      courseId,
-      classes
-    })
-
-    await writeData(ATTENDANCE_FILE, attendanceData)
-  } catch (error) {
-    console.error('Error al inicializar la asistencia del curso:', error)
-    throw error
-  }
-}
+};
 
 function generateNextNDates(dayNames, count) {
   const targetDays = dayNames.map(day => DAY_NAME_TO_NUMBER[day])
@@ -54,7 +18,6 @@ function generateNextNDates(dayNames, count) {
   const dates = []
 
   let current = new Date(today)
-
   while (dates.length < count) {
     if (targetDays.includes(current.getDay())) {
       const dateStr = format(current, 'yyyy-MM-dd')
@@ -66,29 +29,44 @@ function generateNextNDates(dayNames, count) {
   return dates
 }
 
+export async function getAllAttendances() {
+  return await Attendance.find({});
+}
+
+export async function addAttendanceEntry(courseId, days) {
+  try {
+    const classDates = generateNextNDates(days, 30);
+
+    const classes = classDates.map((dateStr, index) => ({
+      numberClass: index + 1,
+      date: dateStr,
+      presents: []
+    }));
+
+    await Attendance.create({
+      courseId: new mongoose.Types.ObjectId(courseId),
+      classes
+    });
+
+  } catch (error) {
+    console.error('Error al inicializar asistencia:', error);
+    throw error;
+  }
+}
+
 export async function renderAttendanceForm(req, res) {
   try {
-    const courses = await getAllCourses();
-    const students = await getAllStudents();
-
+    const courses = await Course.find().populate('enrolledStudents.idStudent');
+    const students = await Student.find();
     const { courseId, classNumber } = req.query;
 
     let selectedStudents = [];
-    let selectedCourseId = null;
     let selectedClassNumber = null;
 
-    console.log(courseId)
+    const selectedCourse = await Course.findById(courseId).populate('enrolledStudents.idStudent');
 
-    if (courseId) {
-      const selectedCourse = courses.find(c => c.id == courseId);
-      
-      selectedCourseId = courseId;
-      if (selectedCourse) {
-        const enrolledIds = selectedCourse.enrolledStudents.map(e => e.idStudent);
-        console.log(enrolledIds)
-        selectedStudents = students.filter(s => enrolledIds.includes(s._id));
-          
-      }
+    if (selectedCourse) {
+      selectedStudents = selectedCourse.enrolledStudents.map(e => e.idStudent);
     }
 
     if (classNumber) {
@@ -98,48 +76,44 @@ export async function renderAttendanceForm(req, res) {
     res.render('take-attendance', {
       courses,
       students: selectedStudents,
-      selectedCourseId,
+      selectedCourseId: courseId,
       classNumber: selectedClassNumber,
       success: 'Guardado con éxito'
     });
-
   } catch (err) {
     console.error('Error al renderizar asistencia:', err);
     res.status(500).send('Error del servidor');
   }
 }
 
-
 export async function saveAttendance(req, res) {
   try {
     const { courseId, classNumber, presents } = req.body;
-    console.log('Recibido presents:', presents);
 
-    const parsedCourseId = parseInt(courseId);
-    const parsedClassNumber = parseInt(classNumber);
+    console.log('Buscando asistencia para el courseId:', courseId); // LOG ERROR EN TOMAR ASISTENCIA
+
+    const attendance = await Attendance.findOne({ courseId });
+
+    if (!attendance) {
+      return res.status(404).send("No se encontró el registro de asistencia");
+    }
+
+    const classObj = attendance.classes.find(c => c.numberClass === parseInt(classNumber));
+    if (!classObj) {
+      return res.status(404).send("Clase no encontrada");
+    }
 
     let presentObjects = [];
 
     if (Array.isArray(presents)) {
-      presentObjects = presents.map(id => ({ studentId: parseInt(id) }));
+      presentObjects = presents.map(id => ({ studentId: new mongoose.Types.ObjectId(id) }));
     } else if (typeof presents === 'string') {
-      presentObjects = [{ studentId: parseInt(presents) }];
-    } else {
-      presentObjects = []; // Ningún alumno tildado
+      presentObjects = [{ studentId: new mongoose.Types.ObjectId(presents) }];
     }
 
-    const allAttendance = await getAllAttendances();
+    classObj.presents = presentObjects;
 
-    const courseAttendance = allAttendance.find(c => c.courseId === parsedCourseId);
-
-    if (courseAttendance) {
-      const classObj = courseAttendance.classes.find(c => c.numberClass === parsedClassNumber);
-      if (classObj) {
-        classObj.presents = presentObjects;
-      }
-    }
-
-    await writeData(ATTENDANCE_FILE, allAttendance);
+    await attendance.save();
 
     res.redirect(`/admin/take-attendance?courseId=${courseId}&classNumber=${classNumber}`);
   } catch (error) {
