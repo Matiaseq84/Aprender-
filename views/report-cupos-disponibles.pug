@@ -1,11 +1,11 @@
 extends admin-panel-layout
 
 block content
-  h2 Cupos disponibles por curso
+  h2(style="margin-bottom: 2rem") Cupos disponibles por curso
 
   if availableCourses.length
-    table
-      thead
+    table.table.table-striped.table-bordered
+      thead.table-dark
         tr
           th Curso
           th Cupo total
@@ -17,6 +17,6 @@ block content
             td= curso.name
             td= curso.capacity
             td= curso.taken
-            td= curso.availability 
+            td= curso.availability
   else
-    p No hay cursos activos registrados.
+    .alert.alert-info No hay cursos activos registrados.

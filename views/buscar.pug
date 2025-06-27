@@ -1,86 +1,93 @@
 extends admin-panel-layout
 
 block content
-  h2 Buscar alumnos o cursos
+  h2(style="margin-bottom: 2rem") Buscar alumnos o cursos
 
-  // Formulario de búsqueda de alumno
+  // 🔍 Formulario de búsqueda de alumno
   form(action="/students/search" method="GET" class="form-edicion")
-    h3 Buscar Alumno
-    label(for="name") Nombre completo:
-    input(type="text" name="name" class="input-text")
-    label(for="dni") DNI:
-    input(type="text" name="dni" class="input-text")
-    button(type="submit" class="btn") Buscar Alumno
+    fieldset
+      legend Buscar Alumno
+      label(for="name") Nombre completo:
+      input(type="text" name="name" id="name" class="input-text")
+
+      label(for="dni") DNI:
+      input(type="text" name="dni" id="dni" class="input-text")
+
+      button(type="submit" class="btn") Buscar Alumno
 
   hr
 
-  // Formulario de búsqueda de curso
+  // 🔍 Formulario de búsqueda de curso
   form(action="/courses/search" method="GET" class="form-edicion")
-    h3 Buscar Curso
-    label(for="name") Nombre del curso:
-    input(type="text" name="name" class="input-text")
-    label(for="teacher") Docente:
-    input(type="text" name="teacher" class="input-text")
-    label(for="status") Estado:
-    select(name="status" class="input-text")
-      option(value="") -- Todos --
-      option(value="Activo") Activo
-      option(value="Inactivo") Inactivo
-    button(type="submit" class="btn") Buscar Curso
+    fieldset
+      legend Buscar Curso
+      label(for="name") Nombre del curso:
+      input(type="text" name="name" id="courseName" class="input-text")
 
-  // Resultado de búsqueda de alumno
+      label(for="teacher") Docente:
+      input(type="text" name="teacher" id="teacher" class="input-text")
+
+      label(for="status") Estado:
+      select(name="status" id="status" class="input-text")
+        option(value="") -- Todos --
+        option(value="Activo") Activo
+        option(value="Inactivo") Inactivo
+
+      button(type="submit" class="btn") Buscar Curso
+
+  // 🎯 Resultado búsqueda alumno
   if alumnoEncontrado
     hr
     h3 Resultado de la búsqueda de alumno
 
     form(action=`/students/update/${alumnoEncontrado._id}` method="POST" class="form-edicion")
-      label Nombre:
-      input(type="text" name="studentName" value=alumnoEncontrado.studentName class="input-text")
+      label(for="studentName") Nombre:
+      input(type="text" id="studentName" name="studentName" value=alumnoEncontrado.studentName class="input-text")
 
-      label Apellido:
-      input(type="text" name="studentLastname" value=alumnoEncontrado.studentLastname class="input-text")
+      label(for="studentLastname") Apellido:
+      input(type="text" id="studentLastname" name="studentLastname" value=alumnoEncontrado.studentLastname class="input-text")
 
-      label DNI:
-      input(type="text" name="dni" value=alumnoEncontrado.dni class="input-text")
+      label(for="dniUpdate") DNI:
+      input(type="text" id="dniUpdate" name="dni" value=alumnoEncontrado.dni class="input-text")
 
-      label Email:
-      input(type="text" name="email" value=alumnoEncontrado.email class="input-text")
+      label(for="email") Email:
+      input(type="text" id="email" name="email" value=alumnoEncontrado.email class="input-text")
 
-      label Teléfono:
-      input(type="text" name="tel" value=alumnoEncontrado.tel class="input-text")
+      label(for="tel") Teléfono:
+      input(type="text" id="tel" name="tel" value=alumnoEncontrado.tel class="input-text")
 
       button(type="submit" class="btn") Modificar
 
     form(action=`/students/delete/${alumnoEncontrado._id}` method="POST" class="form-edicion" onsubmit="return confirm('¿Eliminar este alumno?')")
       button(type="submit" class="btn btn-danger") Eliminar
 
-  // Resultado de búsqueda de curso
+  // 🎯 Resultado búsqueda curso
   if typeof foundCourse !== 'undefined' && foundCourse
     hr
     h3 Resultado de la búsqueda de curso
 
     form(action=`/courses/update/${foundCourse._id}` method="POST" class="form-edicion")
-      label Nombre del curso:
-      input(type="text" name="name" value=foundCourse.courseName class="input-text")
+      label(for="courseNameUpdate") Nombre del curso:
+      input(type="text" id="courseNameUpdate" name="name" value=foundCourse.courseName class="input-text")
 
-      label(for="teacher") Docente
-        select(name="teacher" required)
-            option(value="") #{nameTeacher.name}
-            each teacher in teachers
-                option(value=teacher._id) #{teacher.name}
-        br
-      label Precio:
-      input(type="number" name="price" value=foundCourse.coursePrice class="input-text")
+      label(for="teacher") Docente:
+      select(name="teacher" id="teacher" required class="input-text")
+        option(value="") #{nameTeacher.name}
+        each teacher in teachers
+          option(value=teacher._id) #{teacher.name}
 
-      label Cupo:
-      input(type="number" name="capacity" value=foundCourse.courseCapacity class="input-text")
+      label(for="price") Precio:
+      input(type="number" id="price" name="price" value=foundCourse.coursePrice class="input-text")
 
-      label Estado:
-      select(name="status" class="input-text")
+      label(for="capacity") Cupo:
+      input(type="number" id="capacity" name="capacity" value=foundCourse.courseCapacity class="input-text")
+
+      label(for="statusUpdate") Estado:
+      select(name="status" id="statusUpdate" class="input-text")
         option(value="Activo" selected=foundCourse.status === 'Activo') Activo
         option(value="Inactivo" selected=foundCourse.status === 'Inactivo') Inactivo
 
       button(type="submit" class="btn") Modificar
 
-    form(action=`/courses/delete/${foundCourse.id}` method="POST" class="form-edicion" onsubmit="return confirm('¿Eliminar este curso?')")
+    form(action=`/courses/delete/${foundCourse._id}` method="POST" class="form-edicion" onsubmit="return confirm('¿Eliminar este curso?')")
       button(type="submit" class="btn btn-danger") Eliminar
