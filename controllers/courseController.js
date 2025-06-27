@@ -84,7 +84,7 @@ export async function registerCourse(req, res) {
     }
 
     const newCourse = new Course({
-      courseName,
+        courseName,
         coursePrice,
         courseCapacity,
         schedule,
