@@ -1,64 +1,81 @@
 extends admin-panel-layout  
 
 block content
-    h2 Registrar curso
-    form(action="/admin/register-course" method="POST")
-        label(for="courseName") Nombre del curso: 
-        input(type="text" name="courseName" required)
+  h2 Registrar Curso
 
-        label(for="coursePrice") Precio:
-        input(type="number" name="coursePrice" required)
-        br
+  if success
+    p.alert.alert-success(style="color: green") #{success}
+  if error
+    p.alert.alert-danger(style="color: red") #{error}
 
-        label(for="courseCapacity") Cupo:
-        input(type="number" name="courseCapacity" required)
-        br
+  form.form-edicion(action="/admin/register-course" method="POST")
+    .form-group
+      label(for="courseName") Nombre del curso:
+      input.input-text(type="text" name="courseName" id="courseName" required)
 
-        div#schedules
-            div.schedule
-                select(name="days[]" required)
-                    option(value="Lunes") Lunes
-                    option(value="Martes") Martes
-                    option(value="Miercoles") Miércoles
-                    option(value="Jueves") Jueves
-                    option(value="Viernes") Viernes
-            
-                input(type="time" name="hours[]" required)
-        //button(type="button" onclick="addSchedules()") Agregar otro día y horario
-        
+    .form-group
+      label(for="coursePrice") Precio:
+      input.input-text(type="number" name="coursePrice" id="coursePrice" required)
 
-        label(for="teacher") Profesor/a
-        select(name="teacher" required)
-            option(value="") --Seleccionar--
-            each teacher in teachers
-                option(value=teacher._id) #{teacher.name}
-        br
+    .form-group
+      label(for="courseCapacity") Cupo:
+      input.input-text(type="number" name="courseCapacity" id="courseCapacity" required)
 
-        label(for="status") Activo
-        input(type="radio" name="status" required)
-        br        
+    .form-group
+      label Horarios:
+      div#schedules
+        .schedule
+          select(name="days[]" required)
+            option(value="Lunes") Lunes
+            option(value="Martes") Martes
+            option(value="Miercoles") Miércoles
+            option(value="Jueves") Jueves
+            option(value="Viernes") Viernes
+          input(type="time" name="hours[]" required)
 
-        button(type="submit") Registrar
+      button.btn(type="button" onclick="addSchedules()") ➕ Agregar otro horario
 
-    script.
-        function addSchedules() {
-            const container = document.getElementById('schedules')
-            const scheduleDiv = document.createElement('DIV')
-            scheduleDiv.classList.add('schedule')
-            scheduleDiv.innerHTML = `
-                <select name= "days[]" required>
-                    <option value="Lunes">Lunes</option>
-                    <option value="Martes">Martes</option>
-                    <option value="Miercoles">Miércoles</option>
-                    <option value="Jueves">Jueves</option>
-                    <option value="Viernes">Viernes</option>
-                </select>
-                <input type="time" name="hours[]" required>
-            `;
-            container.appendChild(scheduleDiv)
-        }
+    .form-group
+      label(for="teacher") Profesor/a:
+      select.input-text(name="teacher" id="teacher" required)
+        option(value="") --Seleccionar--
+        each teacher in teachers
+          option(value=teacher._id) #{teacher.name}
 
-    if success
-        p(style="color:green") #{success}
-    if error
-        p(style="color:red") #{error}
+    .form-group
+      label Estado:
+      div
+        label
+          input(type="radio" name="status" value="Activo" required)
+          | Activo
+        label(style="margin-left: 1rem")
+          input(type="radio" name="status" value="Inactivo")
+          | Inactivo
+
+    .form-group
+      button.btn(type="submit") Registrar
+
+  script.
+    function addSchedules() {
+      const container = document.getElementById('schedules');
+      const scheduleDiv = document.createElement('div');
+      scheduleDiv.classList.add('schedule');
+      scheduleDiv.style.marginTop = "0.5rem";
+      scheduleDiv.innerHTML = `
+        <select name="days[]" required>
+          <option value="Lunes">Lunes</option>
+          <option value="Martes">Martes</option>
+          <option value="Miercoles">Miércoles</option>
+          <option value="Jueves">Jueves</option>
+          <option value="Viernes">Viernes</option>
+        </select>
+        <input type="time" name="hours[]" required>
+      `;
+      container.appendChild(scheduleDiv);
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      const schedules = document.querySelectorAll('.schedule');
+      if (schedules.length === 0) {
+        addSchedules(); // Agrega al menos un horario si no hay ninguno
+      }
+    });

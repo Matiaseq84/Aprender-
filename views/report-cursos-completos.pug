@@ -1,20 +1,21 @@
 extends admin-panel-layout
 
 block content
-  h2 Cursos Completos
+  h2(style="margin-bottom: 1.5rem") Cursos Completos
 
   if full.length
-    table
-      thead
-        tr
-          th Nombre
-          th Cupo
-          th Inscriptos
-      tbody
-        each curso in full
+    .table-responsive
+      table.table.table-striped.table-bordered.text-center
+        thead.table-dark
           tr
-            td= curso.name
-            td= curso.capacity
-            td= curso.enrolled
+            th Nombre
+            th Cupo
+            th Inscriptos
+        tbody
+          each curso in full
+            tr
+              td #{curso.name}
+              td #{curso.capacity}
+              td #{curso.enrolled}
   else
-    p No hay cursos completos actualmente.
+    .alert.alert-info No hay cursos completos actualmente.
