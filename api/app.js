@@ -1,6 +1,8 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import connectDB from '../db.js'
+import connectDB from '../db.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Middlewares
 import { authenticateJWT } from '../middlewares/auth.js';
@@ -16,45 +18,46 @@ import reportRoutes from '../routes/reportRoutes.js';
 import * as Teachers from '../controllers/teacherController.js';
 import * as Users from '../controllers/loginController.js';
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+// Manejo de rutas absolutas
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// 🧩 Middlewares generales
+const app = express();
+
+// Middlewares generales
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, '../public'))); // Ruta absoluta
 
+// Configuración del motor de vistas
 app.set('view engine', 'pug');
-app.set('views', './views');
+app.set('views', path.join(__dirname, '../views')); // Ruta absoluta
 
-// 🧑‍💻 Middleware para pasar el usuario a todas las vistas Pug
+// Middleware global para pasar el usuario a todas las vistas Pug
 app.use((req, res, next) => {
   res.locals.user = req.user || null;
   next();
 });
 
-// 🔌 Conectar base de datos e inicializar admin/teachers
+// Conectar base de datos e inicializar admin y docentes
 connectDB().then(async () => {
   await Teachers.initializeTeachers();
   await Users.initializeUsers();
 });
 
-// 📌 Rutas públicas
+// Rutas públicas
 app.get('/', (req, res) => {
   res.render('login');
 });
-app.use('/login', loginRouter); // Login público
+app.use('/login', loginRouter);
 
-// 🔒 Rutas protegidas con middleware JWT
+// Rutas protegidas
 app.use('/admin', authenticateJWT, adminRouter);
 app.use('/courses', authenticateJWT, courseRoutes);
 app.use('/students', authenticateJWT, studentRoutes);
 app.use('/reportes', authenticateJWT, reportRoutes);
 
-// ▶️ Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-});
+// ❌ NO usar app.listen() en Vercel
 
 export default app;
