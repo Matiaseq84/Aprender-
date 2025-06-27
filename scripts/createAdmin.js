@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-import User from './models/User.js'; // Ajusta si tu ruta es diferente
+import User from '../models/User.js'; // Ajusta si tu ruta es diferente
 
 // Tu URI de conexión MongoDB Atlas
 const MONGO_URI = 'mongodb+srv://admin:aprender+@aprenderdb.j9uinj5.mongodb.net/?retryWrites=true&w=majority&appName=AprenderDB';

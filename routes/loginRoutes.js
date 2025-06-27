@@ -1,5 +1,5 @@
 import express from 'express'
-import { validateLogin } from '../controllers/loginController.js'
+import { validateLogin, logout} from '../controllers/loginController.js'
 const router = express.Router()
 
 
@@ -8,5 +8,6 @@ router.get("/", (req,res) => {
 })
 
 router.post("/", validateLogin)
+router.get('/logout', logout);
 
 export default router

@@ -12,7 +12,8 @@ export function authenticateJWT(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
-    req.user = decoded; // Guardamos el usuario en la request
+    req.user = decoded;            // Guardamos el usuario en la request
+    res.locals.user = decoded;     // ✅ Hacemos el usuario accesible en las vistas Pug
     next();
   } catch (err) {
     console.error('❌ Token inválido:', err.message);

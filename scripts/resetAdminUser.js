@@ -1,7 +1,7 @@
 // resetAdminUser.js
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-import User from './models/User.js';
+import User from '../models/User.js';
 
 // ⚠️ Tu URI de conexión a MongoDB Atlas
 const MONGO_URI = 'mongodb+srv://admin:aprender+@aprenderdb.j9uinj5.mongodb.net/?retryWrites=true&w=majority&appName=AprenderDB';
