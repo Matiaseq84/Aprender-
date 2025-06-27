@@ -1,20 +1,20 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import connectDB from './db.js';
+import connectDB from '../db.js'
 
 // Middlewares
-import { authenticateJWT } from './middlewares/auth.js';
+import { authenticateJWT } from '../middlewares/auth.js';
 
 // Rutas
-import loginRouter from './routes/loginRoutes.js';
-import adminRouter from './routes/adminRoutes.js';
-import courseRoutes from './routes/coursesRoutes.js';
-import studentRoutes from './routes/studentsRoutes.js';
-import reportRoutes from './routes/reportRoutes.js';
+import loginRouter from '../routes/loginRoutes.js';
+import adminRouter from '../routes/adminRoutes.js';
+import courseRoutes from '../routes/coursesRoutes.js';
+import studentRoutes from '../routes/studentsRoutes.js';
+import reportRoutes from '../routes/reportRoutes.js';
 
 // Inicializadores
-import * as Teachers from './controllers/teacherController.js';
-import * as Users from './controllers/loginController.js';
+import * as Teachers from '../controllers/teacherController.js';
+import * as Users from '../controllers/loginController.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
