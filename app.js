@@ -1,40 +1,52 @@
 import express from 'express';
-import loginRouter from './routes/loginRoutes.js'
-import adminRouter from './routes/adminRoutes.js'
+import cookieParser from 'cookie-parser';
+import connectDB from './db.js';
+
+// Middlewares
+import { authenticateJWT } from './middlewares/auth.js';
+
+// Rutas
+import loginRouter from './routes/loginRoutes.js';
+import adminRouter from './routes/adminRoutes.js';
 import courseRoutes from './routes/coursesRoutes.js';
 import studentRoutes from './routes/studentsRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
-import * as Teachers from './controllers/teacherController.js'
-import * as Users from './controllers/loginController.js'
-import connectDB from './db.js';
 
-connectDB().then(async () => {
-    await Teachers.initializeTeachers(),
-    await Users.initializeUsers()
+// Inicializadores
+import * as Teachers from './controllers/teacherController.js';
+import * as Users from './controllers/loginController.js';
 
-})
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.urlencoded({extended: true}))
-app.use(express.json())
+// 🧩 Middlewares generales
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.static('public'));
 
 app.set('view engine', 'pug');
-app.set('views', './views')
+app.set('views', './views');
 
-app.use(express.static('public'));
-    
-app.get('/', (req,res) => {
-    res.render('login')
-})
+// 🔌 Conectar base de datos e inicializar admin/teachers
+connectDB().then(async () => {
+  await Teachers.initializeTeachers();
+  await Users.initializeUsers();
+});
 
-app.use('/login', loginRouter)
-app.use('/admin', adminRouter)
-app.use('/courses', courseRoutes);
-app.use('/students', studentRoutes);
-app.use('/reportes', reportRoutes);
+// 📌 Rutas públicas
+app.get('/', (req, res) => {
+  res.render('login');
+});
+app.use('/login', loginRouter); // Login público
 
+// 🔒 Rutas protegidas con middleware JWT
+app.use('/admin', authenticateJWT, adminRouter);
+app.use('/courses', authenticateJWT, courseRoutes);
+app.use('/students', authenticateJWT, studentRoutes);
+app.use('/reportes', authenticateJWT, reportRoutes);
 
+// ▶️ Iniciar servidor
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo  en http://localhost:${PORT}`)
-})
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+});
