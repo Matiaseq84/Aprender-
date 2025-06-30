@@ -58,6 +58,6 @@ app.use('/courses', authenticateJWT, courseRoutes);
 app.use('/students', authenticateJWT, studentRoutes);
 app.use('/reportes', authenticateJWT, reportRoutes);
 
-// ❌ NO usar app.listen() en Vercel
+// NO usar app.listen() en Vercel
 
 export default app;
