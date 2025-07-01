@@ -63,30 +63,30 @@ export async function getCursosCompletos(req, res) {
 
 export async function renderAttendanceReport(req, res) {
   try {
-    // 1. Obtener todos los cursos para el menú desplegable de selección.
+   
     const allCourses = await Course.find({}).sort({ courseName: 1 });
 
-    // 2. Obtener el ID del curso seleccionado desde la URL (query parameter).
+   
     const { courseId } = req.query;
 
     let attendanceReport = null;
     let selectedCourse = null;
 
-    // 3. Si se ha seleccionado un curso, buscar sus datos.
+   
     if (courseId) {
-      // Buscamos el documento de asistencia y populamos TODO lo que necesitamos.
+      
       attendanceReport = await Attendance.findOne({ courseId: courseId })
         .populate({
-          path: 'courseId', // En el modelo Attendance, el campo courseId hace referencia a Course
-          select: 'courseName enrolledStudents' // Traemos el nombre del curso y sus estudiantes
+          path: 'courseId', 
+          select: 'courseName enrolledStudents' 
         })
         .populate({
-          path: 'classes.presents.studentId', // ¡Populamos un campo anidado dentro de un array!
-          model: 'Student', // Especificamos el modelo al que hace referencia
-          select: 'name lastname' // Traemos el nombre y apellido del estudiante
+          path: 'classes.presents.studentId', 
+          model: 'Student', 
+          select: 'name lastname' 
         });
       
-      // También obtenemos la información del curso por separado para tener la lista completa de alumnos
+      
       selectedCourse = await Course.findById(courseId).populate({
         path: 'enrolledStudents.idStudent',
         //model: 'Student',
@@ -98,7 +98,7 @@ export async function renderAttendanceReport(req, res) {
 
     }
 
-    // 4. Renderizar la vista, pasándole todos los datos que necesita.
+    
     res.render('report-asistencia', {
       allCourses,
       selectedCourse,
