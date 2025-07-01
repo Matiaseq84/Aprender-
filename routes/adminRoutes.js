@@ -6,34 +6,34 @@ import { renderAttendanceForm, saveAttendance } from '../controllers/attendanceC
 
 const router = express.Router();
 
-// 🌐 Vista principal del panel
+//  Vista principal del panel
 router.get('/admin-panel', (req, res) => {
   res.redirect('/admin/buscar');
 });
 
-// 👤 Registro de estudiantes
+// Registro de estudiantes
 router.get('/register-students', (req, res) => {
   res.render('register-students', { formData: {}, error: null, success: null });
 });
 router.post('/register-students', registerStudent);
 
-// 📚 Registro de cursos
+// Registro de cursos
 router.get('/register-course', async (req, res) => {
   const teachers = await getAllTeachers();
   res.render('register-course', { teachers });
 });
 router.post('/register-course', registerCourse);
 
-// 🔗 Inscripción de estudiantes
+//  Inscripción de estudiantes
 router.get('/enroll-student', enrollStudent);
 router.post('/enroll-student', registerEnrollment);
 
-// 👀 Búsqueda
+// Búsqueda
 router.get('/buscar', (req, res) => {
   res.render('buscar', { alumnoEncontrado: null, cursoEncontrado: null });
 });
 
-// 📋 Asistencia
+// Asistencia
 router.get('/take-attendance', renderAttendanceForm);
 router.post('/take-attendance', saveAttendance);
 
