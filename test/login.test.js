@@ -5,10 +5,10 @@ describe('POST /login', () => {
   test('Login exitoso devuelve 200 y token', async () => {
     const res = await request(app)
       .post('/login')
-      .set('x-test', 'true') // este header activa el modo JSON en tu backend
+      .set('x-test', 'true') 
       .send({
         username: 'admin',
-        password: 'admin' // el usuario creado en initializeUsers()
+        password: 'admin' 
       });
 
     expect(res.statusCode).toBe(200);
