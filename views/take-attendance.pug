@@ -3,7 +3,7 @@ extends admin-panel-layout
 block content
   h1(style="margin-bottom: 1.5rem") Registrar Asistencia
 
-  // 🔍 FORM GET para seleccionar curso y clase
+  // FORM GET para seleccionar curso y clase
   form(method="GET", action="/admin/take-attendance", class="form-edicion")
     .form-group
       label(for="courseId") Curso:
@@ -21,7 +21,7 @@ block content
 
     button(type="submit" class="btn") Buscar clase
 
-  // 📝 FORM POST para guardar asistencia
+  // FORM POST para guardar asistencia
   if selectedCourseId && classNumber
     h2(style="margin-top: 2rem") Asistencia - Clase #{classNumber}
 
