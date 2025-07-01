@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import User from '../models/User.js';
 
-// ⚠️ Tu URI de conexión a MongoDB Atlas
 const MONGO_URI = 'mongodb+srv://admin:aprender+@aprenderdb.j9uinj5.mongodb.net/?retryWrites=true&w=majority&appName=AprenderDB';
 
 async function resetAdminUser() {
@@ -26,9 +25,9 @@ async function resetAdminUser() {
       role: 'admin'
     });
 
-    console.log('✅ Usuario admin creado con contraseña hasheada');
+    console.log(' Usuario admin creado con contraseña hasheada');
   } catch (error) {
-    console.error('❌ Error al resetear el usuario admin:', error);
+    console.error(' Error al resetear el usuario admin:', error);
   } finally {
     await mongoose.disconnect();
   }
