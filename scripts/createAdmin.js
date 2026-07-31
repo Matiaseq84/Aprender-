@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import User from '../models/User.js'; // Ajusta si tu ruta es diferente
 
 // Tu URI de conexión MongoDB Atlas
-const MONGO_URI = 'mongodb+srv://admin:aprender+@aprenderdb.3ed5pys.mongodb.net/?retryWrites=true&w=majority&appName=AprenderDB';
+const MONGO_URI = 'mongodb+srv://admin:aprender%2B@aprenderdb.3ed5pys.mongodb.net/?retryWrites=true&w=majority&appName=AprenderDB';
 
 async function createAdminUser() {
   try {
