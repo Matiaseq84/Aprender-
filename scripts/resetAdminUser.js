@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import User from '../models/User.js';
 
-const MONGO_URI = 'mongodb+srv://admin:aprender+@aprenderdb.j9uinj5.mongodb.net/?retryWrites=true&w=majority&appName=AprenderDB';
+const MONGO_URI = 'mongodb+srv://admin:aprender+@aprenderdb.3ed5pys.mongodb.net/?retryWrites=true&w=majority&appName=AprenderDB';
 
 async function resetAdminUser() {
   try {
